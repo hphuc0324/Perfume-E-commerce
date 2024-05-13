@@ -16,8 +16,6 @@ function SignUp() {
     const [repassword, setRepassword] = useState('');
     const [checked, setChecked] = useState(false);
 
-    console.log(checked);
-
     return (
         <Authentication>
             <div className={cx('wrapper')}>
