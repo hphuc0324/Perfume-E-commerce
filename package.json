@@ -1,0 +1,14 @@
+{
+  "name": "perfume-e-commerce",
+  "version": "1.0.0",
+  "description": "An e-commerce website for selling Perfume",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^3.2.5"
+  }
+}

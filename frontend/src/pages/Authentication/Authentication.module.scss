@@ -1,0 +1,37 @@
+.wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.header {
+    width: 100%;
+    background-color: #e6e6e6;
+    height: 44px;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 44px;
+}
+
+.background-image {
+    width: 100vw;
+    height: auto;
+}
+
+.content {
+    position: fixed;
+    z-index: 999;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.logo-image {
+    position: absolute;
+    width: 110px;
+    height: auto;
+
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
