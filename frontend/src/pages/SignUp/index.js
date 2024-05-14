@@ -1,9 +1,11 @@
+import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Authentication from '../Authentication';
 
 import classNames from 'classnames/bind';
 
 import styles from './SignUp.module.scss';
-import { useContext, useState } from 'react';
 import request from '../../utils/request';
 import UserContext from '../../context/userContext';
 import { useNavigate } from 'react-router-dom';
@@ -170,7 +172,9 @@ function SignUp() {
                     </button>
                     <div className={cx('others')}>
                         <span className={cx('other-item')}>Already have an account?</span>
-                        <span className={cx('other-item')}>Sign In</span>
+                        <Link to="/login" className={cx('other-item')}>
+                            Sign In
+                        </Link>
                     </div>
                 </form>
             </div>

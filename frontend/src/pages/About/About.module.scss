@@ -1,0 +1,33 @@
+.wrapper {
+    width: 1200px;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 32px 0;
+    align-items: center;
+}
+
+.text-content {
+    max-width: 45%;
+}
+
+.about-header {
+    font-weight: 400;
+    font-size: 2.5rem;
+    margin: 12px 0;
+}
+
+.section-header {
+    display: block;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.about-image {
+    max-width: 45%;
+    height: auto;
+    aspect-ratio: 4/3;
+}

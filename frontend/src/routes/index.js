@@ -17,6 +17,11 @@ const routes = [
         component: <pages.SignUp />,
         layout: null,
     },
+    {
+        path: '/about',
+        component: <pages.About />,
+        layout: layouts.Default,
+    },
 ];
 
 export default routes;

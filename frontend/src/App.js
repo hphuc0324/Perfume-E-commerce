@@ -8,8 +8,6 @@ import request from './utils/request';
 function App() {
     const [user, setUser] = useState(null);
 
-    console.log(user);
-
     const checkUserToken = async () => {
         try {
             const res = await request.get('/checkLoginStatus');

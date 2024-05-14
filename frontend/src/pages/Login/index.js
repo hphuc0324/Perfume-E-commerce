@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Authentication from '../Authentication';
 
 import classNames from 'classnames/bind';
 
 import styles from './Login.module.scss';
-import { useContext, useState } from 'react';
 import request from '../../utils/request';
-import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/userContext';
 
 const cx = classNames.bind(styles);
@@ -50,6 +52,7 @@ function Login() {
                             placeholder="Enter your email or phone number..."
                             value={account}
                             onChange={(e) => setAccount(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -61,6 +64,7 @@ function Login() {
                             placeholder="Enter your password..."
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
                     <span className={cx('error-message')}>{errorMessage}</span>
@@ -69,7 +73,9 @@ function Login() {
                     </button>
                     <div className={cx('others')}>
                         <span className={cx('other-item')}>Don't have an account?</span>
-                        <span className={cx('other-item')}>Sign Up</span>
+                        <Link to="/register" className={cx('other-item')}>
+                            Sign Up
+                        </Link>
                     </div>
                 </form>
             </div>
