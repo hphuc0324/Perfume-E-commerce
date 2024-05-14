@@ -11,7 +11,7 @@ function SignUp() {
     const [account, setAccount] = useState('');
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [address, setAddress] = useState('');
+    const [gender, setGender] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRepassword] = useState('');
     const [checked, setChecked] = useState(false);
@@ -53,14 +53,17 @@ function SignUp() {
                     </div>
 
                     <div className={cx('form-field')}>
-                        <label className={cx('form-label')}>Your Address</label>
-                        <input
+                        <label className={cx('form-label')}>Your Gender</label>
+                        <select
                             className={cx('form-input')}
-                            type="password"
                             placeholder="Enter your address..."
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                        />
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                        >
+                            <option value="male">Male</option>
+                            <option value="femlae">Female</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
 
                     <div className={cx('form-field')}>

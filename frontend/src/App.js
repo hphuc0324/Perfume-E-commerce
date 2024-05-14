@@ -3,15 +3,30 @@ import { Fragment, useEffect, useState } from 'react';
 
 import routes from './routes';
 import UserContext from './context/userContext';
+import request from './utils/request';
 
 function App() {
     const [user, setUser] = useState(null);
 
+    console.log(user);
+
+    const checkUserToken = async () => {
+        try {
+            const res = await request.get('/checkLoginStatus');
+
+            setUser(res.data.user);
+        } catch (err) {
+            setUser(null);
+        }
+    };
+
     //Check user's token
-    useEffect(() => {}, []);
+    useEffect(() => {
+        checkUserToken();
+    }, []);
 
     return (
-        <UserContext.Provider user={user} setUser={setUser}>
+        <UserContext.Provider value={{ user, setUser }}>
             <div className="App">
                 <Routes>
                     {routes.map((route, index) => {
