@@ -64,7 +64,9 @@ function Login() {
                         />
                     </div>
                     <span className={cx('error-message')}>{errorMessage}</span>
-                    <button className={cx('submit-btn')}>Login</button>
+                    <button className={cx('submit-btn')} type="submit">
+                        Login
+                    </button>
                     <div className={cx('others')}>
                         <span className={cx('other-item')}>Don't have an account?</span>
                         <span className={cx('other-item')}>Sign Up</span>
