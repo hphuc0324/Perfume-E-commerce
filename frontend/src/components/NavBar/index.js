@@ -17,7 +17,6 @@ function NavBar() {
     const [selected, setSelected] = useState('');
 
     const location = useLocation();
-    console.log(typeof location.pathname);
 
     useEffect(() => {
         switch (location.pathname) {
@@ -30,10 +29,10 @@ function NavBar() {
             case '/about':
                 setSelected('about');
                 break;
-            case 'blog':
+            case '/blog':
                 setSelected('blog');
                 break;
-            case 'contact':
+            case '/contact':
                 setSelected('contact');
                 break;
             default:
@@ -43,7 +42,9 @@ function NavBar() {
 
     return (
         <div className={cx('wrapper')}>
-            <img src={images.logo} alt="logo" className={cx('logo-image')}></img>
+            <Link to="/">
+                <img src={images.logo} alt="logo" className={cx('logo-image')}></img>
+            </Link>
 
             <SearchBar />
 

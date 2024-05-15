@@ -65,3 +65,26 @@ export const register = async (req, res) => {
 export const checkLoginStatus = (req, res) => {
     return res.status(200).json({ user: req.userID });
 };
+
+export const addContact = async (req, res) => {
+    const { name, email, subject, message } = req.body;
+
+    try {
+        const support = await services.support.createSupport(name, email, subject, message);
+
+        if (support) {
+            return res.status(200).json({
+                message: '',
+            });
+        }
+
+        return res.status(200).json({
+            message: 'Error while creating support! Please try again later',
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({
+            message: 'Error while creating support! Please try again later',
+        });
+    }
+};

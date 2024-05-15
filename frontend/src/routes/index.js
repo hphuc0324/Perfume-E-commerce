@@ -22,6 +22,11 @@ const routes = [
         component: <pages.About />,
         layout: layouts.Default,
     },
+    {
+        path: '/contact',
+        component: <pages.Contact />,
+        layout: layouts.Default,
+    },
 ];
 
 export default routes;

@@ -9,6 +9,7 @@ const initApi = (app) => {
     router.post('/login', apiControllers.login);
     router.post('/register', apiControllers.register);
     router.get('/checkLoginStatus', verifyLoginToken, apiControllers.checkLoginStatus);
+    router.post('/contact', apiControllers.addContact);
 
     return app.use('/api/v1', router);
 };

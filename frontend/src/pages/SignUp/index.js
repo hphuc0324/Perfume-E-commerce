@@ -64,7 +64,7 @@ function SignUp() {
         } else if (textFormat.test(password)) {
             setErrorMessage('Password must not contains special characters');
             return false;
-        } else if (password != repassword) {
+        } else if (password !== repassword) {
             setErrorMessage('Password mismatch!');
             return false;
         } else if (/^\d+$/.test(phoneNumber) === false) {

@@ -1,0 +1,58 @@
+.wrapper {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+
+    z-index: 1;
+
+    &.disabled {
+        display: none;
+    }
+}
+
+.container {
+    width: 500px;
+    padding: 32px 8px;
+    background-color: #d9d9d9;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    margin: 0 16px;
+}
+
+.message-header {
+    font-weight: 600;
+    display: block;
+    padding: 16px 0;
+}
+
+.message-row {
+    display: block;
+    margin: 8px 0;
+}
+
+.noti-image {
+    width: 120px;
+    height: auto;
+    margin: 0 16px;
+}
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    padding: 4px;
+    position: absolute;
+
+    top: 4%;
+    right: 2%;
+    cursor: pointer;
+}
