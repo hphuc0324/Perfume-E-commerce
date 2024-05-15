@@ -2,14 +2,15 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faChevronDown, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import styles from './NavBar.module.scss';
 
 import images from '../../assets/images';
 import SearchBar from '../SearchBar';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import UserPopper from '../../poppers/UserPopper';
 
 const cx = classNames.bind(styles);
 
@@ -49,15 +50,17 @@ function NavBar() {
             <SearchBar />
 
             <div className={cx('actions')}>
-                <button className={cx('action-btn')}>
-                    <span className={cx('action-icon')}>
-                        <FontAwesomeIcon icon={faUser} />
-                    </span>
-                    Account
-                    <span className={cx('action-icon')}>
-                        <FontAwesomeIcon icon={faChevronDown} />
-                    </span>
-                </button>
+                <UserPopper>
+                    <button className={cx('action-btn')}>
+                        <span className={cx('action-icon')}>
+                            <FontAwesomeIcon icon={faUser} />
+                        </span>
+                        Account
+                        <span className={cx('action-icon')}>
+                            <FontAwesomeIcon icon={faChevronDown} />
+                        </span>
+                    </button>
+                </UserPopper>
                 <button className={cx('action-btn')}>
                     <span className={cx('action-icon')}>
                         <FontAwesomeIcon icon={faCartShopping} />

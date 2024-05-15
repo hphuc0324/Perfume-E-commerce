@@ -31,6 +31,11 @@ export const login = async (req, res) => {
     }
 };
 
+export const logout = async (req, res) => {
+    res.clearCookie('loginToken');
+    return res.status(200).json({ user: null });
+};
+
 export const register = async (req, res) => {
     const { account, password, name, gender, phonenumber } = req.body;
 

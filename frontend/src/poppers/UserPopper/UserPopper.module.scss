@@ -1,0 +1,23 @@
+.wrapper {
+    width: 150px;
+}
+
+.item {
+    display: block;
+    min-width: 100%;
+    padding: 8px 12px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(243, 243, 232);
+    }
+}
+
+.logout-btn {
+    background-color: transparent;
+    border: none;
+    font-family: Inter, san-serif;
+    font-size: 1.6rem;
+    margin: 0;
+    text-align: left;
+}

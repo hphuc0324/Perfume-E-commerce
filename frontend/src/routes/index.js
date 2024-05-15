@@ -4,7 +4,7 @@ import * as pages from '../pages';
 const routes = [
     {
         path: '/',
-        component: <div></div>,
+        component: <pages.Home />,
         layout: layouts.Default,
     },
     {

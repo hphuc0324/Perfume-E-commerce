@@ -1,0 +1,52 @@
+.images {
+    margin: 32px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.full-width-image {
+    width: 100%;
+    height: auto;
+    margin: 16px 0;
+}
+
+.half-width-image {
+    width: 575px;
+    height: 400px;
+    object-fit: cover;
+    margin: 16px 0;
+}
+
+.section {
+    margin: 32px 0;
+}
+
+.section-info {
+    text-align: center;
+}
+
+.section-header {
+    display: block;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.section-description {
+    font-size: 1.4rem;
+}
+
+.see-more-btn {
+    display: block;
+    padding: 12px 32px;
+    background-color: black;
+    opacity: 0.75;
+    color: white;
+    margin: 16px auto;
+    width: 160px;
+    text-align: center;
+
+    &:hover {
+        opacity: 1;
+    }
+}
