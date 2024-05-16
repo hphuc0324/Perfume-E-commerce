@@ -27,6 +27,16 @@ const routes = [
         component: <pages.Contact />,
         layout: layouts.Default,
     },
+    {
+        path: '/perfume',
+        component: <pages.Perfume />,
+        layout: layouts.Default,
+    },
+    {
+        path: '/search',
+        component: <pages.Search />,
+        layout: layouts.Default,
+    },
 ];
 
 export default routes;

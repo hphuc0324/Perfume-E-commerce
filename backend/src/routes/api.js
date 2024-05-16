@@ -11,6 +11,8 @@ const initApi = (app) => {
     router.post('/register', apiControllers.register);
     router.get('/checkLoginStatus', verifyLoginToken, apiControllers.checkLoginStatus);
     router.post('/contact', apiControllers.addContact);
+    router.get('/products', apiControllers.getAllProducts);
+    router.get('/products/name', apiControllers.getProductsByName);
 
     return app.use('/api/v1', router);
 };

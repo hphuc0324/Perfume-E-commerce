@@ -11,6 +11,7 @@ import styles from './NavBar.module.scss';
 import images from '../../assets/images';
 import SearchBar from '../SearchBar';
 import UserPopper from '../../poppers/UserPopper';
+import PerfumeCategoryPopper from '../../poppers/PerfumeCategoryPopper';
 
 const cx = classNames.bind(styles);
 
@@ -73,12 +74,16 @@ function NavBar() {
                 <Link to="/" className={cx('link-item', { selected: selected === 'home' })}>
                     Home
                 </Link>
-                <span to="/" className={cx('link-item', { selected: selected === 'perfume' })}>
-                    Perfume
-                    <span className={cx('link-icon')}>
-                        <FontAwesomeIcon icon={faChevronDown} />
+
+                <PerfumeCategoryPopper>
+                    <span className={cx('link-item', { selected: selected === 'perfume' })}>
+                        Perfume
+                        <span className={cx('link-icon')}>
+                            <FontAwesomeIcon icon={faChevronDown} />
+                        </span>
                     </span>
-                </span>
+                </PerfumeCategoryPopper>
+
                 <Link to="/about" className={cx('link-item', { selected: selected === 'about' })}>
                     About us
                 </Link>

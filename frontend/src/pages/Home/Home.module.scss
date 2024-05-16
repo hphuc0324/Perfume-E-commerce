@@ -50,3 +50,17 @@
         opacity: 1;
     }
 }
+
+.flashsale-section,
+.other-section {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.flashsale-product {
+    width: 28%;
+}
+
+.other-product {
+    width: 22%;
+}

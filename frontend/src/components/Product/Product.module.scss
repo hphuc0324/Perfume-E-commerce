@@ -1,0 +1,65 @@
+.wrapper {
+    &.horizontal {
+        display: flex;
+
+        & .product-image {
+            width: 50%;
+        }
+
+        & .addToCart-btn {
+            bottom: auto;
+            top: 20px;
+            right: -50px;
+        }
+
+        & .product-info {
+            margin-left: 16px;
+        }
+    }
+    position: relative;
+}
+
+.product-image {
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.product-info {
+    position: relative;
+}
+
+.product-name {
+    display: block;
+}
+
+.product-old-price {
+    margin-left: 8px;
+    color: #9b9b9b;
+    text-decoration: line-through;
+}
+
+.addToCart-btn {
+    background-color: transparent;
+    font-size: 1.8rem;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 4px;
+}
+
+.discount-tag {
+    width: 50px;
+    padding: 2px 4px;
+    height: 28px;
+    background-color: white;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    text-align: center;
+    color: red;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+}

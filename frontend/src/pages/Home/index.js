@@ -1,13 +1,40 @@
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import styles from './Home.module.scss';
 
 import images from '../../assets/images';
+import request from '../../utils/request';
+import Product from '../../components/Product';
 
 const cx = classNames.bind(styles);
 
 function Home() {
+    const [flashsale, setFlashSale] = useState([]);
+    const [products, setProducts] = useState([]);
+
+    console.log('Product', products);
+    console.log('flashsale', flashsale);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await request.get('/products');
+                const data = res.data.products;
+                setProducts(data.filter((product) => product.discount === 0).slice(0, 4));
+                setFlashSale(data.filter((product) => product.discount !== 0).slice(0, 2));
+            } catch (err) {
+                setProducts([]);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    console.log(products);
+    console.log(flashsale);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('images')}>
@@ -22,7 +49,15 @@ function Home() {
                     <span className={cx('section-description')}>Impressive and best-selling product</span>
                 </div>
 
-                <Link className={cx('see-more-btn')} to="">
+                <div className={cx('flashsale-section')}>
+                    {flashsale.map((product, index) => (
+                        <div className={cx('flashsale-product')}>
+                            <Product product={product} />
+                        </div>
+                    ))}
+                </div>
+
+                <Link className={cx('see-more-btn')} to="/perfume?category=flashsale">
                     SEE MORE
                 </Link>
             </div>
@@ -38,7 +73,15 @@ function Home() {
                     <span className={cx('section-description')}>Diverse and newest products</span>
                 </div>
 
-                <Link className={cx('see-more-btn')} to="">
+                <div className={cx('other-section')}>
+                    {products.map((product, index) => (
+                        <div className={cx('other-product')}>
+                            <Product product={product} />
+                        </div>
+                    ))}
+                </div>
+
+                <Link className={cx('see-more-btn')} to="/perfume">
                     SEE MORE
                 </Link>
             </div>

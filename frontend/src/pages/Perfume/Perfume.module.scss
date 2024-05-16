@@ -1,0 +1,66 @@
+.wrapper {
+    width: 1200px;
+}
+
+.page-sub-path {
+    text-transform: capitalize;
+}
+
+.filter-list {
+    margin: 16px 0;
+}
+
+.filter-header,
+.filter-item {
+    display: block;
+}
+
+.filter-header {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.filter-item {
+    margin: 8px 0;
+    font-size: 1.6rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &.selected {
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: Inter, san-serif;
+}
+
+button.filter-item {
+    padding: 4px 0;
+}
+
+.content {
+    display: flex;
+}
+
+.navbar {
+    margin-right: 100px;
+}
+
+.products {
+    display: flex;
+    flex: 1;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: -32px;
+}
+
+.product {
+    width: 30%;
+    margin-top: 56px;
+    margin-right: 48px;
+}

@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
     scent: { type: String, required: true },
     amount: { type: Number, required: true },
     price: { type: Number, required: true },
+    description: { type: String },
     discount: { type: Number, default: 0 },
     avatar: { type: String },
 });

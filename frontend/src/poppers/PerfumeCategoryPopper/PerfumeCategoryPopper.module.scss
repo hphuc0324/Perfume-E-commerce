@@ -1,0 +1,12 @@
+.wrapper {
+    width: 100px;
+}
+
+.item {
+    display: block;
+    padding: 4px 8px;
+
+    &:hover {
+        background-color: rgb(243, 243, 232);
+    }
+}

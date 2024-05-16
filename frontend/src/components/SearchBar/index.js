@@ -6,6 +6,8 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import styles from './SearchBar.module.scss';
 import useDebounce from '../../hooks/useDebounce';
 
+import { useNavigate } from 'react-router-dom';
+
 import SearchPopper from '../../poppers/SearchPopper';
 
 const cx = classNames.bind(styles);
@@ -26,9 +28,15 @@ function SearchBar() {
     const [searchText, setSearchText] = useState('');
     const searchTextDebounce = useDebounce(searchText, 400);
     const [itemList, setItemList] = useState([]);
+    const navigate = useNavigate();
 
     const handleSearchClick = (e) => {
-        //call api
+        e.preventDefault();
+
+        if (searchTextDebounce.trim().length === 0) {
+            return;
+        }
+        navigate(`/search?name=${searchTextDebounce}`);
     };
 
     useEffect(() => {

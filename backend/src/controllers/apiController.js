@@ -93,3 +93,29 @@ export const addContact = async (req, res) => {
         });
     }
 };
+
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await services.product.getAllProducts();
+
+        return res.status(200).json({ products: products });
+    } catch (err) {
+        console.log(err);
+
+        return res.status(200).json({ products: null });
+    }
+};
+
+export const getProductsByName = async (req, res) => {
+    const { name } = req.query;
+
+    try {
+        let products = await services.product.getAllProducts();
+
+        products = products.filter((product) => product.name.toLowerCase().includes(name.toLowerCase()));
+
+        return res.status(200).json({ products: products });
+    } catch (err) {
+        return res.status(200).json({ products: [] });
+    }
+};
