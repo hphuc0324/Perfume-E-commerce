@@ -158,7 +158,7 @@ export const getProductReviewByID = async (req, res) => {
 };
 
 export const addToCart = async (req, res) => {
-    const { productId, quantity } = req.body;
+    const { productId, productName, quantity } = req.body;
 
     if (quantity === null || quantity === undefined || quantity === '') {
         quantity = 1;
@@ -168,7 +168,7 @@ export const addToCart = async (req, res) => {
         let cartToken = req.cookies.cartToken;
 
         if (cartToken === null || cartToken === undefined) {
-            const products = [{ productId: productId, quantity: quantity }];
+            const products = [{ productId: productId, productName: productName, quantity: quantity }];
 
             cartToken = createCartToken(products);
             res.cookie('cartToken', cartToken);
@@ -186,7 +186,7 @@ export const addToCart = async (req, res) => {
             }
 
             if (!done) {
-                req.data.products.push({ productId: productId, quantity: quantity });
+                req.data.products.push({ productId: productId, productName: productName, quantity: quantity });
             }
 
             cartToken = createCartToken(req.data.products);
@@ -197,4 +197,12 @@ export const addToCart = async (req, res) => {
         console.log(err);
         return res.status(200).json({ message: 'Some errors occured while adding product to Cart! Please try again' });
     }
+};
+
+export const getCartProducts = async (req, res) => {
+    if (!req.cookies.cartToken) {
+        return res.status(200).json({ products: [] });
+    }
+
+    return res.status(200).json({ products: req.data.products });
 };

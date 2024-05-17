@@ -42,6 +42,11 @@ const routes = [
         component: <pages.Product />,
         layout: layouts.Default,
     },
+    {
+        path: '/cart',
+        component: <pages.Cart />,
+        layout: layouts.Default,
+    },
 ];
 
 export default routes;

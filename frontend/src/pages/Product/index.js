@@ -80,7 +80,11 @@ function Product() {
 
     const handleAddToCart = async () => {
         try {
-            const res = await request.post('/addToCart', { productId: product._id, quantity: amount });
+            const res = await request.post('/addToCart', {
+                productId: product._id,
+                productName: product.name,
+                quantity: amount,
+            });
 
             if (res.data.message === '') {
                 setMessages([product.name, 'Quantity: ' + amount]);
