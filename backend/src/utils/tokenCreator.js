@@ -6,3 +6,11 @@ export const createLoginToken = (userID) => {
 
     return token;
 };
+
+export const createCartToken = (products) => {
+    const token = jwt.sign({ products: products }, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_CART_EXPIRATION_TIME,
+    });
+
+    return token;
+};

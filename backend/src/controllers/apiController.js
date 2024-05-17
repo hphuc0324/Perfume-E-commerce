@@ -1,5 +1,5 @@
 import * as services from '../services';
-import { createLoginToken } from '../utils/tokenCreator';
+import { createCartToken, createLoginToken } from '../utils/tokenCreator';
 import bcrypt from 'bcrypt';
 
 export const login = async (req, res) => {
@@ -154,5 +154,47 @@ export const getProductReviewByID = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(200).json({ reviews: [] });
+    }
+};
+
+export const addToCart = async (req, res) => {
+    const { productId, quantity } = req.body;
+
+    if (quantity === null || quantity === undefined || quantity === '') {
+        quantity = 1;
+    }
+
+    try {
+        let cartToken = req.cookies.cartToken;
+
+        if (cartToken === null || cartToken === undefined) {
+            const products = [{ productId: productId, quantity: quantity }];
+
+            cartToken = createCartToken(products);
+            res.cookie('cartToken', cartToken);
+            return res.status(200).json({ message: '' });
+        } else {
+            let done = false;
+            console.log(req.data.products);
+            console.log('quantity added:' + quantity);
+            for (let product of req.data.products) {
+                if (product.productId === productId) {
+                    product.quantity += quantity;
+                    done = true;
+                    break;
+                }
+            }
+
+            if (!done) {
+                req.data.products.push({ productId: productId, quantity: quantity });
+            }
+
+            cartToken = createCartToken(req.data.products);
+            res.cookie('cartToken', cartToken);
+            return res.status(200).json({ message: '' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ message: 'Some errors occured while adding product to Cart! Please try again' });
     }
 };

@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 import * as apiControllers from '../controllers/apiController';
-import { verifyLoginToken } from '../middleware/token';
+import { verifyLoginToken, parseCartToken } from '../middleware/token';
 
 const initApi = (app) => {
     router.get('/');
@@ -15,6 +15,7 @@ const initApi = (app) => {
     router.get('/products/name', apiControllers.getProductsByName);
     router.get('/product/:id', apiControllers.getProductByID);
     router.get('/getProductReview', apiControllers.getProductReviewByID);
+    router.post('/addToCart', parseCartToken, apiControllers.addToCart);
 
     return app.use('/api/v1', router);
 };

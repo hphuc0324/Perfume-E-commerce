@@ -114,6 +114,11 @@
     &:hover {
         opacity: 1;
     }
+
+    &.disabled {
+        opacity: 0.25;
+        pointer-events: none;
+    }
 }
 
 .addToCart-btn {

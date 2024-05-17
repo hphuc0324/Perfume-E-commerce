@@ -8,8 +8,12 @@ import images from '../../assets/images';
 const cx = classNames.bind(styles);
 
 function PopupMessage({ image = null, header, messageRow, callback }) {
+    const handlePropagation = (e) => {
+        e.stopPropagation();
+    };
+
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper')} onClick={handlePropagation}>
             <div className={cx('container')}>
                 {image && <img src={images.about} alt="image-notification" className={cx('noti-image')} />}
                 <div className={cx('content')}>

@@ -10,6 +10,7 @@ import request from '../../utils/request';
 import images from '../../assets/images';
 
 import { default as ProductComp } from '../../components/Product';
+import PopupMessage from '../../components/PopupMessage';
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,10 @@ function Product() {
     const [reviews, setReviews] = useState([]);
     const { id } = useParams();
     const [relatedProduct, setRelatedProduct] = useState([]);
+
+    const [messages, setMessages] = useState([]);
+    const [header, setHeader] = useState('');
+    const [popup, setPopup] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -73,7 +78,22 @@ function Product() {
         fetchRelatedProduct();
     }, [product]);
 
-    console.log('related', relatedProduct);
+    const handleAddToCart = async () => {
+        try {
+            const res = await request.post('/addToCart', { productId: product._id, quantity: amount });
+
+            if (res.data.message === '') {
+                setMessages([product.name, 'Quantity: ' + amount]);
+                setHeader('Product added to cart');
+            } else {
+                setMessages([res.data.message]);
+            }
+        } catch (err) {
+            setMessages(['An error occurred while adding to cart! Please try again']);
+        }
+
+        setPopup(true);
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -152,8 +172,15 @@ function Product() {
                             </div>
 
                             <div className={cx('cart-buttons')}>
-                                <button className={cx('cart-btn', 'addToCart-btn')}>ADD TO CART</button>
-                                <button className={cx('cart-btn', 'buy-btn')}>BUY NOW</button>
+                                <button
+                                    className={cx('cart-btn', 'addToCart-btn', { disabled: amount === 0 })}
+                                    onClick={handleAddToCart}
+                                >
+                                    ADD TO CART
+                                </button>
+                                <button className={cx('cart-btn', 'buy-btn', { disabled: product.amount === 0 })}>
+                                    BUY NOW
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -207,6 +234,19 @@ function Product() {
                         )}
                     </div>
                 </div>
+            )}
+
+            {popup && (
+                <PopupMessage
+                    image={images.about}
+                    header={header}
+                    messageRow={messages}
+                    callback={(e) => {
+                        e.preventDefault();
+
+                        setPopup(false);
+                    }}
+                />
             )}
         </div>
     );

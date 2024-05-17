@@ -15,3 +15,19 @@ export const verifyLoginToken = (req, res, next) => {
         });
     }
 };
+
+export const parseCartToken = (req, res, next) => {
+    const token = req.cookies.cartToken;
+    if (!token) {
+        next();
+    } else {
+        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+            if (err) {
+                next();
+            } else {
+                req.data = decoded;
+                next();
+            }
+        });
+    }
+};

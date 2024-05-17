@@ -14,9 +14,6 @@ function Home() {
     const [flashsale, setFlashSale] = useState([]);
     const [products, setProducts] = useState([]);
 
-    console.log('Product', products);
-    console.log('flashsale', flashsale);
-
     useEffect(() => {
         const fetchProducts = async () => {
             try {
