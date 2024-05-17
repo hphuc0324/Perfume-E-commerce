@@ -37,6 +37,11 @@ const routes = [
         component: <pages.Search />,
         layout: layouts.Default,
     },
+    {
+        path: '/product/:id',
+        component: <pages.Product />,
+        layout: layouts.Default,
+    },
 ];
 
 export default routes;

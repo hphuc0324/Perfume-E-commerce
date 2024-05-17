@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     description: { type: String },
     discount: { type: Number, default: 0 },
+    origin: { type: String },
     avatar: { type: String },
 });
 

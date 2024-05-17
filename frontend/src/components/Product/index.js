@@ -4,12 +4,13 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Product.module.scss';
 import images from '../../assets/images';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function Product({ product, horizontal = false }) {
     return (
-        <div className={cx('wrapper', { horizontal: horizontal })}>
+        <Link to={`/product/${product._id}`} className={cx('wrapper', { horizontal: horizontal })}>
             <img src={images.about} alt="product image" className={cx('product-image')} />
 
             <div className={cx('product-info')}>
@@ -33,7 +34,7 @@ function Product({ product, horizontal = false }) {
                 </button>
             </div>
             {product.discount !== 0 && <div className={cx('discount-tag')}>-{product.discount}%</div>}
-        </div>
+        </Link>
     );
 }
 

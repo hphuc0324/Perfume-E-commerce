@@ -54,13 +54,18 @@
 .flashsale-section,
 .other-section {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    margin-left: -3%;
 }
 
 .flashsale-product {
-    width: 28%;
+    width: 30%;
+    margin-left: 3%;
+    margin-top: 16px;
 }
 
 .other-product {
     width: 22%;
+    margin-left: 3%;
+    margin-top: 16px;
 }

@@ -13,6 +13,8 @@ const initApi = (app) => {
     router.post('/contact', apiControllers.addContact);
     router.get('/products', apiControllers.getAllProducts);
     router.get('/products/name', apiControllers.getProductsByName);
+    router.get('/product/:id', apiControllers.getProductByID);
+    router.get('/getProductReview', apiControllers.getProductReviewByID);
 
     return app.use('/api/v1', router);
 };

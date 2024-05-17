@@ -32,9 +32,6 @@ function Home() {
         fetchProducts();
     }, []);
 
-    console.log(products);
-    console.log(flashsale);
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('images')}>
@@ -51,7 +48,7 @@ function Home() {
 
                 <div className={cx('flashsale-section')}>
                     {flashsale.map((product, index) => (
-                        <div className={cx('flashsale-product')}>
+                        <div key={index} className={cx('flashsale-product')}>
                             <Product product={product} />
                         </div>
                     ))}
@@ -75,7 +72,7 @@ function Home() {
 
                 <div className={cx('other-section')}>
                     {products.map((product, index) => (
-                        <div className={cx('other-product')}>
+                        <div key={index} className={cx('other-product')}>
                             <Product product={product} />
                         </div>
                     ))}

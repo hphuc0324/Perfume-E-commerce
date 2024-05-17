@@ -102,7 +102,7 @@ export const getAllProducts = async (req, res) => {
     } catch (err) {
         console.log(err);
 
-        return res.status(200).json({ products: null });
+        return res.status(200).json({ products: [] });
     }
 };
 
@@ -117,5 +117,42 @@ export const getProductsByName = async (req, res) => {
         return res.status(200).json({ products: products });
     } catch (err) {
         return res.status(200).json({ products: [] });
+    }
+};
+
+export const getProductByID = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (id === undefined || id === null) {
+            return res.status(200).json({ product: null });
+        }
+
+        const product = await services.product.getProductByID(id);
+
+        if (product) {
+            return res.status(200).json({ product: product });
+        }
+        return res.status(200).json({ product: null });
+    } catch (err) {
+        console.log(err);
+
+        return res.status(200).json({ product: null });
+    }
+};
+
+export const getProductReviewByID = async (req, res) => {
+    const { productId } = req.query;
+
+    try {
+        const reviews = await services.productReview.findReviewByProductID(productId);
+
+        if (reviews.length > 0) {
+            return res.status(200).json({ reviews: reviews });
+        }
+        return res.status(200).json({ reviews: [] });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ reviews: [] });
     }
 };
