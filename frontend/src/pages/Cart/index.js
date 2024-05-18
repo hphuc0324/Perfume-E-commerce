@@ -14,6 +14,14 @@ const cx = classNames.bind(styles);
 function Cart() {
     const [products, setProducts] = useState([]);
 
+    const handleDeleteProduct = async (productId) => {
+        try {
+            const res = await request.get('/deleteProduct', { params: { productId: productId } });
+
+            setProducts(res.data.products);
+        } catch (err) {}
+    };
+
     const fetchProducts = async () => {
         try {
             const res = await request.get('/getCartProducts');
@@ -50,7 +58,10 @@ function Cart() {
                                         <span className={cx('product-name')}>{product.productName}</span>
                                         <div className={cx('delete-action')}>
                                             <span className={cx('delete-label')}>Delete</span>
-                                            <button className={cx('delete-btn')}>
+                                            <button
+                                                className={cx('delete-btn')}
+                                                onClick={() => handleDeleteProduct(product.productId)}
+                                            >
                                                 <FontAwesomeIcon icon={faTrash} />
                                             </button>
                                         </div>
@@ -58,10 +69,38 @@ function Cart() {
                                 </div>
 
                                 <span className={cx('product-quantity')}>{product.quantity}</span>
-                                <span className={cx('product-price')}>150000</span>
+                                <span className={cx('product-price')}>
+                                    {(product.productPrice * product.quantity).toLocaleString('it-IT', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                    })}
+                                </span>
                             </div>
                         ))}
                     </div>
+
+                    <div className={cx('others')}>
+                        <span className={cx('describe')}>
+                            We offer complimentary standard shipping. Delivery generally takes 2 to 4 working days from
+                            the order confirmation date. Please note that personalisation may add up to 7-10 business
+                            days to processing and delivery time
+                        </span>
+                        <div className={cx('payment')}>
+                            <span className={cx('payment-header')}>Sub-Total</span>
+                            <span className={cx('payment-value')}>
+                                {products
+                                    .reduce((value, product) => value + product.productPrice * product.quantity, 0)
+                                    .toLocaleString('it-IT', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                    })}
+                            </span>
+                        </div>
+                    </div>
+
+                    <Link to="/delivery" className={cx('purchase-btn')}>
+                        To purchase
+                    </Link>
                 </div>
             ) : (
                 <div className={cx('no-products')}>

@@ -23,6 +23,7 @@ function Product({ product, horizontal = false }) {
             const res = await request.post('/addToCart', {
                 productId: product._id,
                 productName: product.name,
+                productPrice: product.price - (product.price * product.discount) / 100,
                 quantity: 1,
             });
 

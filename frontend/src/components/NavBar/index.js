@@ -62,12 +62,12 @@ function NavBar() {
                         </span>
                     </button>
                 </UserPopper>
-                <button className={cx('action-btn')}>
+                <Link to="/cart" className={cx('action-btn')}>
                     <span className={cx('action-icon')}>
                         <FontAwesomeIcon icon={faCartShopping} />
                     </span>
                     Cart
-                </button>
+                </Link>
             </div>
 
             <div className={cx('link-list')}>

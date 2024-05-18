@@ -23,3 +23,9 @@ export const createUser = async (account, password, name, phonenumber, gender, r
 
     return user;
 };
+
+export const findUserByID = async (id) => {
+    const user = await models.User.findOne({ _id: id });
+
+    return user;
+};

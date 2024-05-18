@@ -67,8 +67,30 @@ export const register = async (req, res) => {
     } catch (err) {}
 };
 
-export const checkLoginStatus = (req, res) => {
+export const checkLoginStatus = async (req, res) => {
     return res.status(200).json({ user: req.userID });
+};
+
+export const getUserInfo = async (req, res) => {
+    if (req.userID === null) {
+        return res.status(200).json({ user: null });
+    }
+
+    try {
+        const user = await services.user.findUserByID(req.userID.userID);
+
+        const userInfo = {
+            name: user.name,
+            gender: user.gender,
+            phonenumber: user.phonenumber,
+            address: user.address ? user.address : null,
+            gmail: user.gmail ? user.gmail : null,
+        };
+
+        return res.status(200).json({ user: userInfo });
+    } catch (err) {
+        return res.status(500).json({ user: null });
+    }
 };
 
 export const addContact = async (req, res) => {
@@ -158,7 +180,7 @@ export const getProductReviewByID = async (req, res) => {
 };
 
 export const addToCart = async (req, res) => {
-    const { productId, productName, quantity } = req.body;
+    const { productId, productName, productPrice, quantity } = req.body;
 
     if (quantity === null || quantity === undefined || quantity === '') {
         quantity = 1;
@@ -168,7 +190,9 @@ export const addToCart = async (req, res) => {
         let cartToken = req.cookies.cartToken;
 
         if (cartToken === null || cartToken === undefined) {
-            const products = [{ productId: productId, productName: productName, quantity: quantity }];
+            const products = [
+                { productId: productId, productName: productName, productPrice: productPrice, quantity: quantity },
+            ];
 
             cartToken = createCartToken(products);
             res.cookie('cartToken', cartToken);
@@ -186,7 +210,12 @@ export const addToCart = async (req, res) => {
             }
 
             if (!done) {
-                req.data.products.push({ productId: productId, productName: productName, quantity: quantity });
+                req.data.products.push({
+                    productId: productId,
+                    productPrice: productPrice,
+                    productName: productName,
+                    quantity: quantity,
+                });
             }
 
             cartToken = createCartToken(req.data.products);
@@ -205,4 +234,60 @@ export const getCartProducts = async (req, res) => {
     }
 
     return res.status(200).json({ products: req.data.products });
+};
+
+export const deleteCartProduct = async (req, res) => {
+    const { productId } = req.query;
+
+    try {
+        if (!req.cookies.cartToken) {
+            return res.status(200).json({ products: [] });
+        }
+
+        let products = req.data.products;
+
+        products = products.filter((product) => product.productId !== productId);
+
+        const cartToken = createCartToken(products);
+        res.cookie('cartToken', cartToken);
+        return res.status(200).json({ products: products });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const createOrder = async (req, res) => {
+    const { products, user, phoneNumber, paymentMethod } = req.body;
+    let userID;
+
+    if (!user) {
+        userID = null;
+    } else {
+        userID = user.userID;
+    }
+
+    try {
+        for (let product of products) {
+            const enough = await services.product.checkProductAmount(product.quantity, product.productId);
+
+            if (!enough) {
+                return res
+                    .status(200)
+                    .json({ message: `Product ${product.productName} is not available`, order: null });
+            }
+        }
+        for (let product of products) {
+            await services.product.reduceProductAmount(product.quantity, product.productId);
+        }
+
+        const order = await services.order.createOrder(products, userID, phoneNumber, paymentMethod);
+
+        if (order) {
+            return res.status(200).json({ order: order, message: '' });
+        }
+
+        return res.status(200).json({ order: null, message: 'Error while creating order! Please try again later' });
+    } catch (err) {
+        return res.status(200).json({ order: null, message: 'Error while creating order! Please try again later' });
+    }
 };

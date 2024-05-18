@@ -1,0 +1,232 @@
+.wrapper {
+    width: 1200px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-header {
+    display: block;
+    font-weight: 600;
+    margin: 8px 0;
+    font-size: 1.8rem;
+}
+
+.user-info-label {
+    margin-left: 12px;
+}
+
+.user-info {
+    max-width: 560px;
+}
+
+.payment {
+    width: 560px;
+}
+
+.form-row {
+    display: flex;
+    margin: 8px 0;
+    justify-content: space-between;
+}
+
+.form-field {
+    display: flex;
+    width: 100%;
+    padding: 24px 16px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: #d9d9d9;
+    border-radius: 8px;
+
+    & .form-input {
+        margin: 8px 0;
+        background-color: white;
+    }
+}
+
+.form-input {
+    height: 52px;
+    padding: 0 12px;
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 5px;
+
+    &.half {
+        width: 48%;
+    }
+
+    &.full {
+        width: 100%;
+    }
+
+    &.third {
+        width: 30%;
+    }
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 32px 0;
+}
+
+.submit-btn {
+    padding: 12px 2px;
+    border-radius: 4px;
+    background-color: #d9d9d9;
+    opacity: 0.75;
+    border: 0.5px solid #788897;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.products {
+    width: 500px;
+    margin-top: 16px;
+}
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.headers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.first-col {
+    width: 160px;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    width: 250px;
+}
+
+.product-name {
+    margin-left: 4px;
+}
+
+.product-image {
+    width: 100px;
+    aspect-ratio: 1 / 1;
+}
+
+.product-price {
+    font-weight: 600;
+}
+
+.separator {
+    background-color: black;
+    width: 100%;
+    height: 1px;
+    margin: 12px 0;
+}
+
+.price,
+.shipping,
+.final {
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type='radio'] {
+    box-sizing: border-box;
+    appearance: none;
+    background: white;
+
+    border: 1px solid #333;
+    width: 12px;
+    height: 12px;
+}
+
+input[type='radio']:checked {
+    background: #333;
+    outline: 2px solid white;
+}
+
+.payment-choice {
+    display: flex;
+    align-items: center;
+}
+
+.payment-type {
+    margin-left: 12px;
+}
+
+.form-label {
+    display: block;
+}
+
+.atm-payment {
+    width: 250px;
+    margin: 12px 0;
+}
+
+.atm-form {
+    width: 250px;
+    & .form-row {
+        display: block;
+    }
+
+    & .form-input {
+        width: 100%;
+        background-color: white;
+        border: 1px solid #788897;
+    }
+
+    & .form-label {
+        font-weight: 600;
+    }
+
+    & .submit-btn {
+        padding: 8px 12px;
+    }
+}
+
+.order {
+    width: 650px;
+}
+
+.order-status {
+    display: flex;
+    align-items: center;
+}
+
+.order-detail {
+    margin-left: 8px;
+}
+
+.order-icon {
+    font-size: 5rem;
+}
+
+.order-header {
+    display: block;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.owner {
+    padding: 16px;
+    border: solid 1px black;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    margin: 32px 0;
+}
+
+.order-row {
+    display: block;
+    margin: 4px 0;
+}

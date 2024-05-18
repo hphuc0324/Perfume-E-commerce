@@ -7,3 +7,4 @@ export { default as Perfume } from './Perfume';
 export { default as Search } from './Search';
 export { default as Product } from './Product';
 export { default as Cart } from './Cart';
+export { default as Delivery } from './Delivery';

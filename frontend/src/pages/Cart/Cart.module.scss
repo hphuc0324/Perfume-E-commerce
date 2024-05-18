@@ -90,3 +90,33 @@
     margin: 0 auto;
     font-weight: 600;
 }
+
+.others {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.describe {
+    font-size: 1.4rem;
+    max-width: 40%;
+}
+
+.payment-header {
+    margin-right: 64px;
+}
+
+.payment-value {
+    font-weight: 600;
+    margin: 0;
+}
+
+.purchase-btn {
+    background-color: #d9d9d9;
+    padding: 8px 16px;
+    display: block;
+    margin: 8px 0;
+    width: 150px;
+    text-align: center;
+    margin-left: calc(1200px - 150px);
+}

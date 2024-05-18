@@ -17,6 +17,9 @@ const initApi = (app) => {
     router.get('/getProductReview', apiControllers.getProductReviewByID);
     router.post('/addToCart', parseCartToken, apiControllers.addToCart);
     router.get('/getCartProducts', parseCartToken, apiControllers.getCartProducts);
+    router.get('/deleteProduct', parseCartToken, apiControllers.deleteCartProduct);
+    router.get('/getUserInfo', verifyLoginToken, apiControllers.getUserInfo);
+    router.post('/purchase', apiControllers.createOrder);
 
     return app.use('/api/v1', router);
 };
