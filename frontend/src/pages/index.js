@@ -8,3 +8,6 @@ export { default as Search } from './Search';
 export { default as Product } from './Product';
 export { default as Cart } from './Cart';
 export { default as Delivery } from './Delivery';
+export { default as AdminClient } from './Client';
+export { default as AdminProduct } from './AdminProduct';
+export { default as AdminOrder } from './AdminOrder';

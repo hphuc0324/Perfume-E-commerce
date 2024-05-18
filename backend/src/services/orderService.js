@@ -12,3 +12,7 @@ export const createOrder = async (products, userID, phoneNumber, paymentMethod) 
 
     return order;
 };
+
+export const getAllOrders = async () => {
+    return await models.Order.find();
+};

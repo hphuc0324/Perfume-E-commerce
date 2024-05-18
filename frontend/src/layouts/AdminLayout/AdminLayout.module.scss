@@ -1,0 +1,52 @@
+.wrapper {
+    width: 100%;
+}
+
+.container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-right: 16px;
+}
+
+.account-logo {
+    width: 50px;
+    aspect-ratio: 1/1;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.account-label {
+    display: block;
+}
+
+.welcome {
+    display: block;
+    margin: 0 32px;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 16px;
+        background-color: black;
+        top: 50%;
+        left: -16px;
+        transform: translateY(-50%);
+    }
+}
+
+.account {
+    text-align: center;
+}

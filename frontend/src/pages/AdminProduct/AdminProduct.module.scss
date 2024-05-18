@@ -1,0 +1,44 @@
+.wrapper {
+    width: 1000px;
+
+    height: 200px;
+}
+
+.table-header {
+    height: 60px;
+    background-color: black;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 60px;
+    padding: 0 16px;
+}
+
+.data-table {
+    padding: 8px 16px;
+    background-color: #d9d9d9;
+}
+
+.data-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.data-col {
+    display: block;
+    width: 15%;
+
+    &.header {
+        font-weight: 600;
+        margin: 4px 0;
+    }
+
+    &.index-col {
+        width: 5%;
+    }
+
+    &.last-col {
+        width: 7%;
+    }
+}

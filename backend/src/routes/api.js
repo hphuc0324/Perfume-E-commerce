@@ -20,6 +20,8 @@ const initApi = (app) => {
     router.get('/deleteProduct', parseCartToken, apiControllers.deleteCartProduct);
     router.get('/getUserInfo', verifyLoginToken, apiControllers.getUserInfo);
     router.post('/purchase', apiControllers.createOrder);
+    router.get('/getAllUsers', apiControllers.getAllUsers);
+    router.get('/getAllOrders', apiControllers.getAllOrders);
 
     return app.use('/api/v1', router);
 };

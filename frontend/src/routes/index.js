@@ -48,9 +48,24 @@ const routes = [
         layout: layouts.Default,
     },
     {
-        path: 'delivery',
+        path: '/delivery',
         component: <pages.Delivery />,
         layout: layouts.Default,
+    },
+    {
+        path: '/admin/client',
+        component: <pages.AdminClient />,
+        layout: layouts.Admin,
+    },
+    {
+        path: '/admin/product',
+        component: <pages.AdminProduct />,
+        layout: layouts.Admin,
+    },
+    {
+        path: '/admin/order',
+        component: <pages.AdminOrder />,
+        layout: layouts.Admin,
     },
 ];
 

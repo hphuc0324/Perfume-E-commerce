@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 import request from '../../utils/request';
 import images from '../../assets/images';
@@ -26,6 +27,8 @@ function Product() {
     const [messages, setMessages] = useState([]);
     const [header, setHeader] = useState('');
     const [popup, setPopup] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -77,6 +80,11 @@ function Product() {
 
         fetchRelatedProduct();
     }, [product]);
+
+    const handleBuy = async () => {
+        await handleAddToCart();
+        navigate('/delivery');
+    };
 
     const handleAddToCart = async () => {
         try {
@@ -183,7 +191,10 @@ function Product() {
                                 >
                                     ADD TO CART
                                 </button>
-                                <button className={cx('cart-btn', 'buy-btn', { disabled: product.amount === 0 })}>
+                                <button
+                                    className={cx('cart-btn', 'buy-btn', { disabled: product.amount === 0 })}
+                                    onClick={handleBuy}
+                                >
                                     BUY NOW
                                 </button>
                             </div>

@@ -19,9 +19,9 @@ export const login = async (req, res) => {
             });
         }
 
-        const token = createLoginToken(user._id);
+        const token = createLoginToken(user._id, user.role);
         res.cookie('loginToken', token);
-        return res.status(200).json({ user: user._id, message: '' });
+        return res.status(200).json({ user: user._id, role: user.role, message: '' });
     } catch (err) {
         console.log(err);
 
@@ -55,9 +55,9 @@ export const register = async (req, res) => {
         try {
             const user = await services.user.createUser(account, password, name, phonenumber, gender);
 
-            const token = createLoginToken(user._id);
+            const token = createLoginToken(user._id, user.role);
             res.cookie('loginToken', token);
-            return res.status(200).json({ user: user._id, message: '' });
+            return res.status(200).json({ user: user._id, role: user.role, message: '' });
         } catch (err) {
             console.log(err);
             return res.status(200).json({
@@ -68,7 +68,7 @@ export const register = async (req, res) => {
 };
 
 export const checkLoginStatus = async (req, res) => {
-    return res.status(200).json({ user: req.userID });
+    return res.status(200).json({ user: req.userID, role: req.role });
 };
 
 export const getUserInfo = async (req, res) => {
@@ -90,6 +90,17 @@ export const getUserInfo = async (req, res) => {
         return res.status(200).json({ user: userInfo });
     } catch (err) {
         return res.status(500).json({ user: null });
+    }
+};
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await services.user.getAllUsers();
+
+        return res.status(200).json({ users: users });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ users: [] });
     }
 };
 
@@ -289,5 +300,15 @@ export const createOrder = async (req, res) => {
         return res.status(200).json({ order: null, message: 'Error while creating order! Please try again later' });
     } catch (err) {
         return res.status(200).json({ order: null, message: 'Error while creating order! Please try again later' });
+    }
+};
+
+export const getAllOrders = async (req, res) => {
+    try {
+        const orders = await services.order.getAllOrders();
+        return res.status(200).json({ orders: orders });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ orders: [] });
     }
 };

@@ -29,3 +29,7 @@ export const findUserByID = async (id) => {
 
     return user;
 };
+
+export const getAllUsers = async () => {
+    return await models.User.find({ role: 'user' });
+};
