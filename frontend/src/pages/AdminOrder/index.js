@@ -39,7 +39,9 @@ function AdminOrder() {
                     orders.map((order, index) => (
                         <div key={index} className={cx('data-row')}>
                             <span className={cx('data-col', 'index-col')}>{index}</span>
-                            <span className={cx('data-col')}>{order.userID.slice(0, 10)}</span>
+                            <span className={cx('data-col')}>
+                                {order.userID ? order.userID.slice(0, 10) : 'Guests'}
+                            </span>
                             <span className={cx('data-col')}>{order.phonenumber}</span>
                             <span className={cx('data-col')}>{order.paymentmethod}</span>
                             <span className={cx('data-col')}>{new Date(order.date).toLocaleDateString()}</span>
