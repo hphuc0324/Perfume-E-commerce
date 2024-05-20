@@ -21,7 +21,12 @@
     flex: 1;
 }
 
-.product-name,
+.product-name {
+    width: 100%;
+    font-weight: 600;
+    font-size: 2rem;
+}
+
 .product-new-price,
 .capacity-header,
 .description-header,

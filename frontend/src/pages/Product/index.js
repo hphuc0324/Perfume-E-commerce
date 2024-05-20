@@ -116,7 +116,7 @@ function Product() {
                         Home / Perfume / <b>{product.name}</b>
                     </span>
                     <div className={cx('product-content')}>
-                        <img src={images.contact} className={cx('main-image')} />
+                        <img src={product.avatar} className={cx('main-image')} />
                         {product.discount !== 0 && <div className={cx('discount-label')}>-{product.discount}%</div>}
                         <div className={cx('product-info')}>
                             <span className={cx('product-name')}>{product.name}</span>
@@ -141,7 +141,7 @@ function Product() {
                                     <br />
                                     Type: {product.category}
                                     <br />
-                                    Origin: {product.origin}
+                                    Origin: {product.origin || 'France'}
                                     <br />
                                     Scent: {product.scent}
                                 </div>

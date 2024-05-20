@@ -20,7 +20,7 @@ function Home() {
                 const res = await request.get('/products');
                 const data = res.data.products;
                 setProducts(data.filter((product) => product.discount === 0).slice(0, 4));
-                setFlashSale(data.filter((product) => product.discount !== 0).slice(0, 2));
+                setFlashSale(data.filter((product) => product.discount !== 0).slice(0, 3));
             } catch (err) {
                 setProducts([]);
             }

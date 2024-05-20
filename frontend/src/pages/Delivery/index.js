@@ -31,8 +31,10 @@ function Delivery() {
         setStep(step);
     };
 
-    const handlePurchase = async (e) => {
-        e.preventDefault();
+    const handlePurchase = async (e = null) => {
+        if (e) {
+            e.preventDefault();
+        }
         try {
             const res = await request.post('/purchase', {
                 products: products,
@@ -43,7 +45,7 @@ function Delivery() {
 
             setOrder(res.data.order);
 
-            if (res.data.order != null) {
+            if (res.data.order !== null) {
                 setStep(4);
             }
         } catch (err) {
@@ -51,11 +53,11 @@ function Delivery() {
         }
     };
 
-    console.log(order);
+    console.log(step);
 
     const handlePaymentMethod = async () => {
         if (paymentMethod === 'cod') {
-            //Call api
+            await handlePurchase();
         } else {
             setStep(3);
         }
@@ -208,7 +210,7 @@ function Delivery() {
                                 <input
                                     type="radio"
                                     name="payment-method"
-                                    value="COD"
+                                    value="cod"
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                     required
                                 />

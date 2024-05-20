@@ -42,7 +42,7 @@ function Product({ product, horizontal = false }) {
 
     return (
         <Link to={`/product/${product._id}`} className={cx('wrapper', { horizontal: horizontal })}>
-            <img src={images.about} alt="product image" className={cx('product-image')} />
+            <img src={product.avatar} alt="product image" className={cx('product-image')} />
 
             <div className={cx('product-info')}>
                 <span className={cx('product-name')}>{product.name}</span>
