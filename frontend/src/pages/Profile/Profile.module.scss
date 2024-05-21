@@ -1,0 +1,39 @@
+.wrapper {
+    width: 1200px;
+}
+
+.user-tabs {
+    margin: 32px 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.user-tab {
+    display: block;
+    padding: 16px 24px;
+    width: 350px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+}
+
+.tab-icon,
+.tab-header,
+.tab-detail {
+    display: block;
+}
+
+.tab-icon {
+    font-size: 2.5rem;
+    margin: 4px 0;
+}
+
+.tab-header {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 24px 0 4px 0;
+}
+
+.tab-detail {
+    font-size: 1.5rem;
+    font-weight: 300;
+}

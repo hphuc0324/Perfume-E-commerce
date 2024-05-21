@@ -43,6 +43,16 @@ const routes = [
         layout: layouts.Default,
     },
     {
+        path: '/profile',
+        component: <pages.Profile />,
+        layout: layouts.Default,
+    },
+    {
+        path: '/profile/information',
+        component: <pages.UserInformation />,
+        layout: layouts.Default,
+    },
+    {
         path: '/cart',
         component: <pages.Cart />,
         layout: layouts.Default,

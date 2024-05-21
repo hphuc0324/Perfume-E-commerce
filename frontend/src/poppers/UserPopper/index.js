@@ -43,7 +43,7 @@ function UserPopper({ children }) {
 
                     {user && (
                         <Wrapper classnames={cx('user-wrapper')}>
-                            <Link className={cx('item')} to={'/login'}>
+                            <Link className={cx('item')} to={'/profile'}>
                                 View profile
                             </Link>
                             <button className={cx('item', 'logout-btn')} onClick={handleLogout}>

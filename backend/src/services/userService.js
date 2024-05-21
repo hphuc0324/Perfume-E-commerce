@@ -33,3 +33,18 @@ export const findUserByID = async (id) => {
 export const getAllUsers = async () => {
     return await models.User.find({ role: 'user' });
 };
+
+export const updateUser = async (data, userID) => {
+    return await models.User.updateOne(
+        { _id: userID },
+        {
+            $set: {
+                name: data.name,
+                phonenumber: data.phonenumber,
+                gender: data.gender,
+                address: data.address,
+                gmail: data.email,
+            },
+        },
+    );
+};

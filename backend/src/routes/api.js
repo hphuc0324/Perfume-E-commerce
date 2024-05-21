@@ -22,6 +22,7 @@ const initApi = (app) => {
     router.post('/purchase', apiControllers.createOrder);
     router.get('/getAllUsers', apiControllers.getAllUsers);
     router.get('/getAllOrders', apiControllers.getAllOrders);
+    router.post('/updateUser', verifyLoginToken, apiControllers.updateUserInfo);
 
     return app.use('/api/v1', router);
 };

@@ -312,3 +312,20 @@ export const getAllOrders = async (req, res) => {
         return res.status(200).json({ orders: [] });
     }
 };
+
+export const updateUserInfo = async (req, res) => {
+    const data = req.body;
+
+    try {
+        const user = await services.user.updateUser(data.userInfo, req.userID.userID);
+
+        if (!user) {
+            return res.status(200).json({ message: 'Error while updating user info! Please try again later' });
+        }
+
+        return res.status(200).json({ message: '' });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ message: 'Error while updating user info! Please try again later' });
+    }
+};

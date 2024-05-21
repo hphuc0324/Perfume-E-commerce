@@ -1,0 +1,139 @@
+.wrapper {
+    width: 1200px;
+}
+
+.redirect-path {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.header {
+    font-size: 2.5rem;
+    margin: 48px 0;
+}
+
+.content {
+    padding: 16px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 32px;
+}
+
+.header {
+    width: 100%;
+    margin: 0 0 32px;
+}
+
+.info-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 50%;
+}
+
+.form-part {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: #d9d9d9;
+    border-radius: 8px;
+    margin: 4px 0;
+
+    & .form-input {
+        background-color: white;
+    }
+}
+
+.form-field {
+    margin: 4px 0;
+
+    &.half {
+        width: 48%;
+    }
+
+    &.full {
+        width: 100%;
+    }
+
+    &.one-third {
+        width: 32%;
+    }
+}
+
+.form-input {
+    background-color: #d9d9d9;
+    height: 54px;
+    border: none;
+    border-radius: 5px;
+    border: solid 1px #788897;
+    padding: 4px 0px 4px 16px;
+    width: 100%;
+}
+
+.submit-btn {
+    color: black;
+    height: 35px;
+    padding: 8px 32px;
+    margin: 16px 0;
+    cursor: pointer;
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+// Policy section
+
+.policy-section {
+    padding: 8px 16px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 12px;
+    max-width: 35%;
+}
+
+.policy {
+    width: 100%;
+    padding: 16px 0;
+    position: relative;
+
+    + .policy {
+        &::before {
+            content: '';
+            display: block;
+            width: 85%;
+            height: 1px;
+            background-color: rgb(221, 221, 221);
+            position: relative;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 16px 0 32px 0;
+        }
+    }
+}
+
+.policy-header,
+.policy-icon,
+.policy-content {
+    display: block;
+}
+
+.policy-icon {
+    font-size: 2.8rem;
+}
+
+.policy-header {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+.policy-content {
+    font-size: 1.5rem;
+    font-weight: 300;
+}

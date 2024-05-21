@@ -3,8 +3,6 @@ import classNames from 'classnames/bind';
 import styles from './AdminProduct.module.scss';
 import { useEffect, useState } from 'react';
 import request from '../../utils/request';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
