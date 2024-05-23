@@ -13,7 +13,7 @@ function Client() {
 
     const fetchUsers = async () => {
         try {
-            const res = await request.get('/getAllUsers');
+            const res = await request.get('/users/search', { params: { role: 'user', page: 1, limit: 5 } });
 
             setUsers(res.data.users);
         } catch (err) {
@@ -43,7 +43,7 @@ function Client() {
                         <div key={index} className={cx('data-row')}>
                             <span className={cx('data-col', 'index-col')}>{index}</span>
                             <span className={cx('data-col')}>{user.name}</span>
-                            <span className={cx('data-col')}>{user.email || 'Not submitted'}</span>
+                            <span className={cx('data-col')}>{user.gmail || 'Not submitted'}</span>
                             <span className={cx('data-col')}>{user.gender}</span>
                             <span className={cx('data-col')}>{user.phonenumber}</span>
                             <span className={cx('data-col')}>{user.status}</span>

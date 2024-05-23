@@ -53,6 +53,11 @@ const routes = [
         layout: layouts.Default,
     },
     {
+        path: '/profile/orders',
+        component: <pages.ClientOrder />,
+        layout: layouts.Default,
+    },
+    {
         path: '/cart',
         component: <pages.Cart />,
         layout: layouts.Default,

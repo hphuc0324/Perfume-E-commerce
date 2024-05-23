@@ -23,7 +23,7 @@ function Profile() {
                     <span className={cx('tab-header')}>Information</span>
                     <span className={cx('tab-detail')}>Provide personal details and how we can reach you</span>
                 </Link>
-                <Link className={cx('user-tab')}>
+                <Link to="/profile/orders" className={cx('user-tab')}>
                     <span className={cx('tab-icon')}>
                         <FontAwesomeIcon icon={faCubes} />
                     </span>

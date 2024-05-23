@@ -13,3 +13,4 @@ export { default as AdminProduct } from './AdminProduct';
 export { default as AdminOrder } from './AdminOrder';
 export { default as Profile } from './Profile';
 export { default as UserInformation } from './UserInformation';
+export { default as ClientOrder } from './ClientOrder';

@@ -6,7 +6,8 @@ export const login = async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const user = await services.user.findUserByUsername(username);
+        const users = await services.user.searchUsers({ account: username });
+        const user = users[0];
         let passwordMatch;
 
         try {
@@ -39,12 +40,10 @@ export const logout = async (req, res) => {
 export const register = async (req, res) => {
     const { account, password, name, gender, phonenumber } = req.body;
 
-    console.log(req.body);
-
     try {
         let user;
 
-        user = await services.user.findUserByUsername(account);
+        user = await services.user.searchUsers(account);
 
         if (user) {
             return res.status(200).json({
@@ -93,9 +92,10 @@ export const getUserInfo = async (req, res) => {
     }
 };
 
-export const getAllUsers = async (req, res) => {
+export const searchUsers = async (req, res) => {
+    const params = req.query;
     try {
-        const users = await services.user.getAllUsers();
+        const users = await services.user.searchUsers(params);
 
         return res.status(200).json({ users: users });
     } catch (err) {
@@ -174,11 +174,11 @@ export const getProductByID = async (req, res) => {
     }
 };
 
-export const getProductReviewByID = async (req, res) => {
-    const { productId } = req.query;
+export const searchProductReviews = async (req, res) => {
+    const params = req.query;
 
     try {
-        const reviews = await services.productReview.findReviewByProductID(productId);
+        const reviews = await services.productReview.searchProductReviews(params);
 
         if (reviews.length > 0) {
             return res.status(200).json({ reviews: reviews });
@@ -247,6 +247,39 @@ export const getCartProducts = async (req, res) => {
     return res.status(200).json({ products: req.data.products });
 };
 
+export const getCartDetails = async (req, res) => {
+    if (!req.data) {
+        return res.status(200).json({ products: [] });
+    }
+
+    try {
+        const products = req.data.products;
+        const productIDs = products.map((product) => product.productId);
+
+        const initialProducts = await services.product.searchProducts({ _id: { $in: productIDs } });
+
+        const details = products.map((product) => {
+            const mapped = initialProducts.find((p) => p._id.toString() === product.productId);
+
+            return {
+                productId: product.productId,
+                productName: mapped.name,
+                productPrice: mapped.productPrice,
+                quantity: product.quantity,
+                price:
+                    mapped.discount === 0
+                        ? mapped.price * product.quantity
+                        : (mapped.price - (mapped.price * mapped.discount) / 100) * product.quantity,
+                avatar: mapped.avatar,
+            };
+        });
+        return res.status(200).json({ products: details });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ products: [] });
+    }
+};
+
 export const deleteCartProduct = async (req, res) => {
     const { productId } = req.query;
 
@@ -303,9 +336,12 @@ export const createOrder = async (req, res) => {
     }
 };
 
-export const getAllOrders = async (req, res) => {
+export const searchOrders = async (req, res) => {
+    const params = req.query;
+
     try {
-        const orders = await services.order.getAllOrders();
+        const orders = await services.order.searchOrders(params);
+
         return res.status(200).json({ orders: orders });
     } catch (err) {
         console.log(err);
@@ -327,5 +363,17 @@ export const updateUserInfo = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(200).json({ message: 'Error while updating user info! Please try again later' });
+    }
+};
+
+export const searchProducts = async (req, res) => {
+    const params = req.query;
+
+    try {
+        const products = await services.product.searchProducts(params);
+        return res.status(200).json({ products: products });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ products: [] });
     }
 };

@@ -3,12 +3,6 @@ import bcrypt from 'bcrypt';
 import * as models from '../models';
 import { saltRounds } from '../config/config';
 
-export const findUserByUsername = async (username) => {
-    const user = await models.User.findOne({ account: username });
-
-    return user;
-};
-
 export const createUser = async (account, password, name, phonenumber, gender, role = 'user') => {
     const passwordHashed = await bcrypt.hash(password, saltRounds);
 
@@ -30,8 +24,12 @@ export const findUserByID = async (id) => {
     return user;
 };
 
-export const getAllUsers = async () => {
-    return await models.User.find({ role: 'user' });
+export const searchUsers = async (params) => {
+    const query = { ...params, page: null, limit: null };
+
+    return await models.User.find(query)
+        .skip((params.pages + 1) * params.limit)
+        .limit(params.limit);
 };
 
 export const updateUser = async (data, userID) => {

@@ -10,19 +10,23 @@ const initApi = (app) => {
     router.get('/logout', apiControllers.logout);
     router.post('/register', apiControllers.register);
     router.get('/checkLoginStatus', verifyLoginToken, apiControllers.checkLoginStatus);
-    router.post('/contact', apiControllers.addContact);
-    router.get('/products', apiControllers.getAllProducts);
-    router.get('/products/name', apiControllers.getProductsByName);
-    router.get('/product/:id', apiControllers.getProductByID);
-    router.get('/getProductReview', apiControllers.getProductReviewByID);
+    router.post('/updateUser', verifyLoginToken, apiControllers.updateUserInfo);
+    router.get('/getUserInfo', verifyLoginToken, apiControllers.getUserInfo);
+    router.get('/users/search', apiControllers.searchUsers);
+
+    router.get('/products/search', apiControllers.searchProducts);
+
     router.post('/addToCart', parseCartToken, apiControllers.addToCart);
     router.get('/getCartProducts', parseCartToken, apiControllers.getCartProducts);
     router.get('/deleteProduct', parseCartToken, apiControllers.deleteCartProduct);
-    router.get('/getUserInfo', verifyLoginToken, apiControllers.getUserInfo);
+    router.get('/getCartDetails', parseCartToken, apiControllers.getCartDetails);
+
+    router.get('/productsReviews/search', apiControllers.searchProductReviews);
+
+    router.get('/orders/search', apiControllers.searchOrders);
+
+    router.post('/contact', apiControllers.addContact);
     router.post('/purchase', apiControllers.createOrder);
-    router.get('/getAllUsers', apiControllers.getAllUsers);
-    router.get('/getAllOrders', apiControllers.getAllOrders);
-    router.post('/updateUser', verifyLoginToken, apiControllers.updateUserInfo);
 
     return app.use('/api/v1', router);
 };

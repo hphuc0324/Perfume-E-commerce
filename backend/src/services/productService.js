@@ -20,3 +20,15 @@ export const reduceProductAmount = async (amount, id) => {
 
     return await models.Product.updateOne({ _id: id }, { $set: { amount: amountLeft } });
 };
+
+export const searchProducts = async (params) => {
+    const query = { ...params };
+
+    if (query.name) {
+        query.name = new RegExp(query.name, 'i');
+    }
+
+    const products = models.Product.find(query);
+
+    return products;
+};

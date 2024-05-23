@@ -20,7 +20,7 @@ function Perfume() {
     //Load all products
     useEffect(() => {
         const fetchProducts = async () => {
-            const res = await request.get('/products');
+            const res = await request.get('/products/search');
             setProducts(res.data.products);
         };
 

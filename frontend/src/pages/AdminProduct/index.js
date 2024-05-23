@@ -12,7 +12,7 @@ function AdminProduct() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await request.get('/products');
+                const res = await request.get('/products/search');
 
                 setProducts(res.data.products);
             } catch (err) {

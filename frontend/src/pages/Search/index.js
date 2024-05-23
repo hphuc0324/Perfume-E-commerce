@@ -16,7 +16,7 @@ function Search() {
 
     const handleFetchProduct = async (name) => {
         try {
-            const res = await request.get('/products/name', { params: { name: name } });
+            const res = await request.get('/products/search', { params: { name: name } });
 
             setResults(res.data.products);
         } catch (err) {

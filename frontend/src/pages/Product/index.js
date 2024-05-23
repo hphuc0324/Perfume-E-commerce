@@ -34,11 +34,9 @@ function Product() {
         const fetchProduct = async () => {
             try {
                 console.log(id);
-                const res = await request.get(`/product/${id}`);
+                const res = await request.get('/products/search', { params: { _id: id } });
 
-                console.log(res.data.product);
-
-                setProduct(res.data.product);
+                setProduct(res.data.products[0]);
             } catch (err) {
                 setProduct(null);
             }
@@ -50,7 +48,7 @@ function Product() {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await request.get('/getProductReview', {
+                const res = await request.get('/productsReviews/search', {
                     params: {
                         productId: id,
                     },
@@ -68,13 +66,11 @@ function Product() {
     useEffect(() => {
         const fetchRelatedProduct = async () => {
             try {
-                const res = await request.get('/products');
+                const res = await request.get('/products/search', { params: { category: product.category } });
 
                 const products = res.data.products;
 
-                setRelatedProduct(
-                    products.filter((related) => related.category === product.category && related._id !== product._id),
-                );
+                setRelatedProduct(products.filter((related) => related._id !== product._id));
             } catch (err) {}
         };
 

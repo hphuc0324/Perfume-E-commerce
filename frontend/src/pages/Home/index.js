@@ -17,7 +17,7 @@ function Home() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await request.get('/products');
+                const res = await request.get('/products/search');
                 const data = res.data.products;
                 setProducts(data.filter((product) => product.discount === 0).slice(0, 4));
                 setFlashSale(data.filter((product) => product.discount !== 0).slice(0, 3));

@@ -12,7 +12,7 @@ function AdminOrder() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await request.get('/getAllOrders');
+                const res = await request.get('/orders/search');
 
                 setOrders(res.data.orders);
             } catch (err) {
