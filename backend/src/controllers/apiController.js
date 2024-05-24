@@ -191,7 +191,7 @@ export const searchProductReviews = async (req, res) => {
 };
 
 export const addToCart = async (req, res) => {
-    const { productId, productName, productPrice, quantity } = req.body;
+    const { productId, quantity } = req.body;
 
     if (quantity === null || quantity === undefined || quantity === '') {
         quantity = 1;
@@ -201,17 +201,14 @@ export const addToCart = async (req, res) => {
         let cartToken = req.cookies.cartToken;
 
         if (cartToken === null || cartToken === undefined) {
-            const products = [
-                { productId: productId, productName: productName, productPrice: productPrice, quantity: quantity },
-            ];
+            const products = [{ productId: productId, quantity: quantity }];
 
             cartToken = createCartToken(products);
             res.cookie('cartToken', cartToken);
             return res.status(200).json({ message: '' });
         } else {
             let done = false;
-            console.log(req.data.products);
-            console.log('quantity added:' + quantity);
+
             for (let product of req.data.products) {
                 if (product.productId === productId) {
                     product.quantity += quantity;
@@ -223,8 +220,7 @@ export const addToCart = async (req, res) => {
             if (!done) {
                 req.data.products.push({
                     productId: productId,
-                    productPrice: productPrice,
-                    productName: productName,
+
                     quantity: quantity,
                 });
             }
@@ -264,9 +260,8 @@ export const getCartDetails = async (req, res) => {
             return {
                 productId: product.productId,
                 productName: mapped.name,
-                productPrice: mapped.productPrice,
                 quantity: product.quantity,
-                price:
+                productPrice:
                     mapped.discount === 0
                         ? mapped.price * product.quantity
                         : (mapped.price - (mapped.price * mapped.discount) / 100) * product.quantity,
@@ -301,38 +296,51 @@ export const deleteCartProduct = async (req, res) => {
 };
 
 export const createOrder = async (req, res) => {
-    const { products, user, phoneNumber, paymentMethod } = req.body;
-    let userID;
-
-    if (!user) {
-        userID = null;
-    } else {
-        userID = user.userID;
-    }
+    const { deliveryInfo, orderDetails, userID } = req.body;
 
     try {
+        const products = orderDetails.products.map((product) => ({
+            productID: product.productId,
+            quantity: product.quantity,
+        }));
+
         for (let product of products) {
-            const enough = await services.product.checkProductAmount(product.quantity, product.productId);
+            console.log(product);
+            const enough = await services.product.checkProductAmount(product.quantity, product.productID);
 
             if (!enough) {
-                return res
-                    .status(200)
-                    .json({ message: `Product ${product.productName} is not available`, order: null });
+                return res.status(200).json({
+                    message: `Product ${orderDetails.products.find((p) => p.productId === product.productID).productName} is out of stock!`,
+                    order: null,
+                });
             }
         }
+
         for (let product of products) {
-            await services.product.reduceProductAmount(product.quantity, product.productId);
+            await services.product.reduceProductAmount(product.quantity, product.productID);
         }
 
-        const order = await services.order.createOrder(products, userID, phoneNumber, paymentMethod);
+        const data = {
+            products: products,
+            transportstatus: 'not delivered',
+            date: new Date(),
+            paymentmethod: orderDetails.paymentMethod,
+            total: orderDetails.total,
+            userID: userID,
+            email: deliveryInfo.email,
+            name: deliveryInfo.name,
+            phonenumber: deliveryInfo.phoneNumber,
+            address: deliveryInfo.address,
+        };
 
-        if (order) {
-            return res.status(200).json({ order: order, message: '' });
-        }
+        const order = await services.order.createOrder(data);
 
-        return res.status(200).json({ order: null, message: 'Error while creating order! Please try again later' });
+        res.clearCookie('cartToken');
+        return res.status(200).json({ order: order });
     } catch (err) {
-        return res.status(200).json({ order: null, message: 'Error while creating order! Please try again later' });
+        console.log(err);
+
+        return res.status(200).json({ order: null, message: 'Error while purchasing orders, please try again later!' });
     }
 };
 

@@ -68,7 +68,7 @@ function Product({ product, horizontal = false }) {
 
             {popup && (
                 <PopupMessage
-                    image={images.about}
+                    image={product.avatar}
                     header={header}
                     messageRow={messages}
                     callback={(e) => {

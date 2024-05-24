@@ -15,13 +15,7 @@ function PopupMessage({ image = null, header, messageRow, callback }) {
     return (
         <div className={cx('wrapper')} onClick={handlePropagation}>
             <div className={cx('container')}>
-                {image && (
-                    <img
-                        src="https://res.cloudinary.com/cloudinary-hphucc0324/image/upload/v1715963652/test/ea1111ibur0mxlswiiji.png"
-                        alt="image-notification"
-                        className={cx('noti-image')}
-                    />
-                )}
+                {image && <img src={image} alt="image-notification" className={cx('noti-image')} />}
                 <div className={cx('content')}>
                     <span className={cx('message-header')}>{header}</span>
                     {messageRow.length > 0 &&

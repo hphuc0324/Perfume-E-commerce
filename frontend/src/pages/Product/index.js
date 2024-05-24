@@ -33,7 +33,6 @@ function Product() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                console.log(id);
                 const res = await request.get('/products/search', { params: { _id: id } });
 
                 setProduct(res.data.products[0]);
@@ -250,7 +249,7 @@ function Product() {
 
             {popup && (
                 <PopupMessage
-                    image={images.about}
+                    image={product.avatar}
                     header={header}
                     messageRow={messages}
                     callback={(e) => {

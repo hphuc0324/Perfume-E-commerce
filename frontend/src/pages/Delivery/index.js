@@ -6,57 +6,90 @@ import { Link } from 'react-router-dom';
 
 import styles from './Delivery.module.scss';
 import UserContext from '../../context/userContext';
-import images from '../../assets/images';
 import request from '../../utils/request';
+import PopupMessage from '../../components/PopupMessage';
 
 const cx = classNames.bind(styles);
 
 function Delivery() {
     const [step, setStep] = useState(1);
     const { user } = useContext(UserContext);
-    const [userInfo, setUserInfo] = useState(null);
-    const [name, setName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [email, setEmail] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [district, setDistrict] = useState('');
-    const [ward, setWard] = useState('');
-    const [products, setProducts] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [paymentMethod, setPaymentMethod] = useState('');
+    const [deliveryInfo, setDeliveryInfo] = useState({
+        name: '',
+        phoneNumber: '',
+        email: '',
+        address: {
+            housenumber: '',
+            city: '',
+            district: '',
+            ward: '',
+        },
+    });
     const [order, setOrder] = useState(null);
+    const [orderDetails, setOrderDetails] = useState({
+        products: [],
+        paymentMethod: '',
+        total: 0,
+    });
+    const [popup, setPopup] = useState(false);
+    const [message, setMessage] = useState([]);
 
     const handleChangeStep = (step) => {
         setStep(step);
     };
 
-    const handlePurchase = async (e = null) => {
-        if (e) {
-            e.preventDefault();
-        }
+    const handleChangeData = (e) => {
+        const { name, value } = e.target;
+
+        const newData = {
+            ...deliveryInfo,
+            [name]: value,
+        };
+
+        setDeliveryInfo(newData);
+    };
+
+    const handleChangeSubData = (e) => {
+        const { name, value } = e.target;
+
+        const newData = {
+            ...deliveryInfo,
+            address: {
+                ...deliveryInfo.address,
+                [name]: value,
+            },
+        };
+
+        setDeliveryInfo(newData);
+    };
+
+    const handlePurchase = async () => {
         try {
             const res = await request.post('/purchase', {
-                products: products,
-                user: user,
-                phoneNumber: phoneNumber,
-                paymentMethod: paymentMethod,
+                orderDetails: orderDetails,
+                deliveryInfo: deliveryInfo,
+                userID: user ? user.userID : null,
             });
 
             setOrder(res.data.order);
+            setMessage([res.data.message]);
 
-            if (res.data.order !== null) {
+            if (res.data.order) {
                 setStep(4);
+            } else {
+                setPopup(true);
             }
         } catch (err) {
             setOrder(null);
+            setPopup(true);
+            setMessage(['Error while purchasing! Please try again later']);
+            console.log(err);
         }
     };
 
-    console.log(step);
-
-    const handlePaymentMethod = async () => {
-        if (paymentMethod === 'cod') {
+    const handlePaymentMethod = async (e) => {
+        e.preventDefault();
+        if (orderDetails.paymentMethod === 'COD') {
             await handlePurchase();
         } else {
             setStep(3);
@@ -65,33 +98,68 @@ function Delivery() {
 
     const fetchUserInfo = async () => {
         try {
-            const res = await request.get('/getUserInfo');
+            const res = await request.get('/users/search', { params: { _id: user.userID } });
 
-            setUserInfo(res.data.user);
+            const userDetail = res.data.users ? res.data.users[0] : null;
 
-            if (res.data.user) {
-                setName(res.data.user.name);
-                setPhoneNumber(res.data.user.phonenumber);
-                setEmail(res.data.user.gmail);
-            }
+            const delivery = userDetail
+                ? {
+                      name: userDetail.name,
+                      address: userDetail.address
+                          ? userDetail.address
+                          : {
+                                city: '',
+                                district: '',
+                                ward: '',
+                                housenumber: '',
+                            },
+                      phoneNumber: userDetail.phonenumber,
+                      email: userDetail.gmail ? userDetail.gmail : '',
+                  }
+                : {
+                      name: '',
+                      address: {
+                          city: '',
+                          district: '',
+                          ward: '',
+                          housenumber: '',
+                      },
+                      phoneNumber: '',
+                      email: '',
+                  };
+            setDeliveryInfo(delivery);
         } catch (err) {
-            setUserInfo(null);
+            setDeliveryInfo({
+                name: '',
+                address: {
+                    city: '',
+                    district: '',
+                    ward: '',
+                    housenumber: '',
+                },
+                phoneNumber: '',
+                email: '',
+            });
         }
     };
 
     const fetchProducts = async () => {
         try {
-            const res = await request.get('/getCartProducts');
+            const res = await request.get('/getCartDetails');
 
-            setProducts(res.data.products);
+            setOrderDetails({ ...orderDetails, products: res.data.products });
         } catch (err) {
-            setProducts([]);
+            setOrderDetails({});
         }
     };
 
     useEffect(() => {
-        setTotal(products.reduce((value, product) => value + product.productPrice * product.quantity, 0));
-    }, [products]);
+        const total = orderDetails.products.reduce(
+            (value, product) => value + product.productPrice * product.quantity,
+            0,
+        );
+        setOrderDetails({ ...orderDetails, total: total });
+    }, [orderDetails.products]);
 
     //Fetch cart products
     useEffect(() => {
@@ -105,6 +173,10 @@ function Delivery() {
 
     return (
         <div className={cx('wrapper')}>
+            {popup && (
+                <PopupMessage header={'Purchase failed!'} messageRow={message} callback={() => setPopup(false)} />
+            )}
+
             <span className={cx('page-path')}>
                 Shopping cart / <b>Delivery Information </b>
             </span>
@@ -113,12 +185,12 @@ function Delivery() {
                 {step === 1 && (
                     <div className={cx('user-info')}>
                         <span className={cx('form-header')}>Delivery information</span>
-                        {userInfo ? (
+                        {user ? (
                             <span className={cx('user')}>
                                 <FontAwesomeIcon icon={faUser} />
                                 <span className={cx('user-info-label')}>
                                     {' '}
-                                    {userInfo.name} {userInfo.gmail}
+                                    {deliveryInfo.name} - {deliveryInfo.email}
                                 </span>
                             </span>
                         ) : (
@@ -130,21 +202,29 @@ function Delivery() {
                             </span>
                         )}
 
-                        <form className={cx('information-form')} onSubmit={() => handleChangeStep(2)}>
+                        <form
+                            className={cx('information-form')}
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handleChangeStep(2);
+                            }}
+                        >
                             <div className={cx('form-row')}>
                                 <input
                                     className={cx('form-input', 'half')}
                                     placeholder="Your name: "
-                                    readOnly={userInfo}
-                                    value={name}
+                                    readOnly={user}
+                                    value={deliveryInfo.name}
+                                    name="name"
+                                    onChange={handleChangeData}
                                     required
-                                    onChange={(e) => setName(e.target.value)}
                                 />
                                 <input
                                     className={cx('form-input', 'half')}
                                     placeholder="Phone number: "
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    name="phoneNumber"
+                                    value={deliveryInfo.phoneNumber}
+                                    onChange={handleChangeData}
                                     required
                                 />
                             </div>
@@ -152,39 +232,45 @@ function Delivery() {
                                 <input
                                     className={cx('form-input', 'full')}
                                     placeholder="Email: "
-                                    value={email}
+                                    readOnly={user}
+                                    name="email"
+                                    value={deliveryInfo.email}
+                                    onChange={handleChangeData}
                                     required
-                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
 
                             <div className={cx('form-field')}>
                                 <input
                                     className={cx('form-input', 'full')}
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
+                                    value={deliveryInfo.address.housenumber}
+                                    name="housenumber"
                                     placeholder="Address"
+                                    onChange={handleChangeSubData}
                                     required
                                 />
                                 <input
                                     className={cx('form-input', 'third')}
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
+                                    value={deliveryInfo.address.city}
+                                    name="city"
                                     placeholder="City/Province"
+                                    onChange={handleChangeSubData}
                                     required
                                 />
                                 <input
                                     className={cx('form-input', 'third')}
-                                    value={district}
-                                    onChange={(e) => setDistrict(e.target.value)}
+                                    value={deliveryInfo.address.district}
+                                    name="district"
                                     placeholder="District"
+                                    onChange={handleChangeSubData}
                                     required
                                 />
                                 <input
                                     className={cx('form-input', 'third')}
-                                    value={ward}
-                                    onChange={(e) => setWard(e.target.value)}
+                                    value={deliveryInfo.address.ward}
+                                    name="ward"
                                     placeholder="Ward"
+                                    onChange={handleChangeSubData}
                                     required
                                 />
                             </div>
@@ -210,8 +296,10 @@ function Delivery() {
                                 <input
                                     type="radio"
                                     name="payment-method"
-                                    value="cod"
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    value="COD"
+                                    onChange={(e) =>
+                                        setOrderDetails((prev) => ({ ...prev, paymentMethod: e.target.value }))
+                                    }
                                     required
                                 />
                                 <span className={cx('payment-type')}>Pay on delivery (COD)</span>
@@ -221,16 +309,24 @@ function Delivery() {
                                     type="radio"
                                     name="payment-method"
                                     value="ATM"
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    onChange={(e) =>
+                                        setOrderDetails((prev) => ({ ...prev, paymentMethod: e.target.value }))
+                                    }
                                     required
                                 />
                                 <span className={cx('payment-type')}>ATM</span>
                             </div>
                         </div>
                         <div className={cx('form-actions')}>
-                            <Link to="/cart">
-                                <FontAwesomeIcon icon={faShoppingCart} />
-                            </Link>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleChangeStep(1);
+                                }}
+                                className={cx('submit-btn')}
+                            >
+                                Back to Delivery Information
+                            </button>
 
                             <button type="submit" className={cx('submit-btn')}>
                                 Order fullfillment
@@ -262,7 +358,13 @@ function Delivery() {
                             </div>
 
                             <div className={cx('form-actions')}>
-                                <button onClick={() => handleChangeStep(2)} className={cx('submit-btn')}>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleChangeStep(2);
+                                    }}
+                                    className={cx('submit-btn')}
+                                >
                                     Cancel
                                 </button>
 
@@ -274,7 +376,7 @@ function Delivery() {
                     </div>
                 )}
 
-                {step === 4 && (
+                {step === 4 && order && (
                     <div className={cx('order')}>
                         <div className={cx('order-status')}>
                             <span className={cx('order-icon')}>
@@ -290,14 +392,15 @@ function Delivery() {
                         <div className={cx('owner')}>
                             <span className={cx('order-header')}>Order Information</span>
 
-                            <span className={cx('order-row')}>Name: {name}</span>
-                            <span className={cx('order-row')}>Phone: {phoneNumber}</span>
+                            <span className={cx('order-row')}>Name: {deliveryInfo.name}</span>
+                            <span className={cx('order-row')}>Phone: {deliveryInfo.phoneNumber}</span>
                             <span className={cx('order-row')}>
-                                Address: {address}, ward {ward}, district {district}, {city}
+                                Address: {deliveryInfo.address.housenumber}, ward {deliveryInfo.address.ward}, district{' '}
+                                {deliveryInfo.address.district}, {deliveryInfo.address.city}
                             </span>
 
-                            <span className={cx('order-header')}>Order Information</span>
-                            <span className={cx('order-row')}>{paymentMethod}</span>
+                            <span className={cx('order-header')}>Payment method</span>
+                            <span className={cx('order-row')}>{orderDetails.paymentMethod}</span>
                         </div>
 
                         <Link to="/perfume" className={cx('submit-btn')}>
@@ -312,10 +415,10 @@ function Delivery() {
                         <span>Quantity</span>
                         <span>Price</span>
                     </div>
-                    {products.map((product, index) => (
+                    {orderDetails.products.map((product, index) => (
                         <div key={index} className={cx('product')}>
                             <div className={cx('product-info')}>
-                                <img src={images.about} className={cx('product-image')} />
+                                <img src={product.avatar} className={cx('product-image')} />
                                 <span className={cx('product-name')}>{product.productName}</span>
                             </div>
                             <span className={cx('product-quantity')}>{product.quantity}</span>
@@ -333,7 +436,7 @@ function Delivery() {
                         <div className={cx('price')}>
                             <span className={cx('price-total')}>Provision</span>
                             <span className={cx('price-total')}>
-                                {total.toLocaleString('it-IT', {
+                                {orderDetails.total.toLocaleString('it-IT', {
                                     style: 'currency',
                                     currency: 'VND',
                                 })}
@@ -351,7 +454,7 @@ function Delivery() {
                     <div className={cx('final')}>
                         <span>Total</span>
                         <span>
-                            {total.toLocaleString('it-IT', {
+                            {orderDetails.total.toLocaleString('it-IT', {
                                 style: 'currency',
                                 currency: 'VND',
                             })}

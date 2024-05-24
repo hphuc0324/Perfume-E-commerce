@@ -12,19 +12,20 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Cart() {
+    const [changedProducts, setChangedProducts] = useState([]);
     const [products, setProducts] = useState([]);
 
     const handleDeleteProduct = async (productId) => {
         try {
-            const res = await request.get('/deleteProduct', { params: { productId: productId } });
+            const res = await request.get('/removeFromCart', { params: { productId: productId } });
 
-            setProducts(res.data.products);
+            setChangedProducts(res.data.products);
         } catch (err) {}
     };
 
     const fetchProducts = async () => {
         try {
-            const res = await request.get('/getCartProducts');
+            const res = await request.get('/getCartDetails');
             setProducts(res.data.products);
         } catch (err) {
             setProducts([]);
@@ -33,7 +34,7 @@ function Cart() {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [changedProducts]);
 
     return (
         <div className={cx('wrapper')}>
@@ -53,7 +54,7 @@ function Cart() {
                         {products.map((product, index) => (
                             <div key={index} className={cx('product')}>
                                 <div className={cx('product-info')}>
-                                    <img src={images.about} className={cx('product-image')} />
+                                    <img src={product.avatar} className={cx('product-image')} />
                                     <div className={cx('product-actions')}>
                                         <span className={cx('product-name')}>{product.productName}</span>
                                         <div className={cx('delete-action')}>
