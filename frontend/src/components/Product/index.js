@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 import styles from './Product.module.scss';
-import images from '../../assets/images';
 import request from '../../utils/request';
 
 import PopupMessage from '../PopupMessage';

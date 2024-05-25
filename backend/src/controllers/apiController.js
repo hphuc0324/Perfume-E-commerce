@@ -302,10 +302,10 @@ export const createOrder = async (req, res) => {
         const products = orderDetails.products.map((product) => ({
             productID: product.productId,
             quantity: product.quantity,
+            status: 'not reviewed',
         }));
 
         for (let product of products) {
-            console.log(product);
             const enough = await services.product.checkProductAmount(product.quantity, product.productID);
 
             if (!enough) {
@@ -383,5 +383,30 @@ export const searchProducts = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(200).json({ products: [] });
+    }
+};
+
+export const getOrdersDetails = async (req, res) => {
+    const { idList } = req.query;
+
+    try {
+        const ordersDetails = await Promise.all(
+            idList.map(async (order) => {
+                const productsID = order.productsID;
+
+                const products = await services.product.searchProducts({ _id: { $in: productsID } });
+                const data = {
+                    orderID: order.orderID,
+                    products: products,
+                };
+
+                return data;
+            }),
+        );
+
+        return res.status(200).json({ ordersDetails: ordersDetails });
+    } catch (err) {
+        return res.status(200).josn({ orderDetails: [] });
+        console.log(err);
     }
 };

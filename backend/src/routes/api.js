@@ -24,9 +24,10 @@ const initApi = (app) => {
     router.get('/productsReviews/search', apiControllers.searchProductReviews);
 
     router.get('/orders/search', apiControllers.searchOrders);
+    router.post('/purchase', apiControllers.createOrder);
+    router.get('/getOrdersDetails', apiControllers.getOrdersDetails);
 
     router.post('/contact', apiControllers.addContact);
-    router.post('/purchase', apiControllers.createOrder);
 
     return app.use('/api/v1', router);
 };
