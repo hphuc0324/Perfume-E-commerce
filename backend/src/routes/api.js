@@ -22,8 +22,10 @@ const initApi = (app) => {
     router.get('/getCartDetails', parseCartToken, apiControllers.getCartDetails);
 
     router.get('/productsReviews/search', apiControllers.searchProductReviews);
+    router.post('/addProductsReview', apiControllers.addProductReview);
 
     router.get('/orders/search', apiControllers.searchOrders);
+    router.put('/updateOrder', apiControllers.updateOrder);
     router.post('/purchase', apiControllers.createOrder);
     router.get('/getOrdersDetails', apiControllers.getOrdersDetails);
 

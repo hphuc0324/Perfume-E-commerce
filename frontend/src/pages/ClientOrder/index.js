@@ -6,6 +6,7 @@ import styles from './ClientOrder.module.scss';
 import request from '../../utils/request';
 
 import UserContext from '../../context/userContext';
+import RatingModal from '../../components/RatingModal';
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +14,8 @@ function ClientOrder() {
     const [orders, setOrders] = useState([]);
     const { user } = useContext(UserContext);
     const [mapped, setMapped] = useState([]);
+    const [showRatingModal, setShowRatingModal] = useState(false);
+    const [modalParams, setModalParams] = useState({});
 
     const fetchOrders = async () => {
         try {
@@ -24,7 +27,7 @@ function ClientOrder() {
         }
     };
 
-    const fetchOrdersDetails = async (req, res) => {
+    const fetchOrdersDetails = async () => {
         if (orders.length === 0) {
             return;
         }
@@ -51,6 +54,7 @@ function ClientOrder() {
                         return {
                             ...product,
                             quantity: order.products[index].quantity,
+                            status: order.products[index].status,
                         };
                     }),
                 };
@@ -60,11 +64,28 @@ function ClientOrder() {
         } catch (err) {}
     };
 
-    console.log(mapped);
+    const handleConfirmOrder = async (order) => {
+        try {
+            const res = await request.put('/updateOrder', { id: order._id, updates: { transportstatus: 'delivered' } });
+
+            const updatedOrder = res.data.order;
+
+            if (updatedOrder) {
+                setMapped((prev) => {
+                    return prev.map((o) => (o._id === updatedOrder._id ? { ...o, transportstatus: 'delivered' } : o));
+                });
+            }
+        } catch (err) {}
+    };
+
+    const handleOpenModal = (orderID, product) => {
+        setModalParams({ orderID: orderID, product: product, user: user.userID });
+        setShowRatingModal(true);
+    };
 
     useEffect(() => {
         fetchOrders();
-    }, [user]);
+    }, [user, showRatingModal]);
 
     useEffect(() => {
         fetchOrdersDetails();
@@ -90,18 +111,18 @@ function ClientOrder() {
                 <div className={cx('orders-section')}>
                     <div className={cx('order-row')}>
                         <div className={cx('col-10', 'row-header')}>Order ID</div>
-                        <div className={cx('col-30', 'row-header')}>Products</div>
+                        <div className={cx('col-25', 'row-header')}>Products</div>
                         <div className={cx('col-10', 'row-header')}>Date</div>
                         <div className={cx('col-15', 'row-header')}>Transport Status</div>
                         <div className={cx('col-15', 'row-header')}>Payment method</div>
                         <div className={cx('col-10', 'row-header')}>Total payment</div>
-                        {/* <button className={cx('col-5')}>Confirm have receive order</button> */}
+                        <div className={cx('col-10', 'row-header', 'end')}>Confirm order</div>
                     </div>
 
                     {mapped.map((order, index) => (
                         <div key={index} className={cx('order-row')}>
                             <div className={cx('col-10')}>{order._id.slice(0, 10)}</div>
-                            <div className={cx('col-30', 'products')}>
+                            <div className={cx('col-25', 'products')}>
                                 {order.products.map((product, p_index) => (
                                     <div key={p_index} className={cx('product')}>
                                         <img src={product.avatar} className={cx('product-avatar')} />
@@ -109,6 +130,14 @@ function ClientOrder() {
                                             <span className={cx('product-name')}>{product.name}</span>
                                             <span className={cx('product-quantity')}>x{product.quantity}</span>
                                         </div>
+                                        {product.status === 'not reviewed' && order.transportstatus === 'delivered' && (
+                                            <button
+                                                onClick={() => handleOpenModal(order._id, product)}
+                                                className={cx('review-btn')}
+                                            >
+                                                Rate
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -118,10 +147,20 @@ function ClientOrder() {
                             <div className={cx('col-10')}>
                                 {order.total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
                             </div>
+                            <div className={cx('col-10', 'end')}>
+                                <button
+                                    onClick={() => handleConfirmOrder(order)}
+                                    className={cx('confirm-btn', { disabled: order.transportstatus === 'delivered' })}
+                                >
+                                    Received
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
             )}
+
+            {showRatingModal && <RatingModal params={modalParams} setActive={setShowRatingModal} />}
         </div>
     );
 }

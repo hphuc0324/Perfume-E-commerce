@@ -190,6 +190,39 @@ export const searchProductReviews = async (req, res) => {
     }
 };
 
+export const addProductReview = async (req, res) => {
+    const data = req.body;
+
+    try {
+        const review = await services.productReview.createProductReview(data);
+
+        if (!review) {
+            return res.status(200).json({
+                message: 'Error while creating review! Please try again later',
+                notiHeader: 'Failed to adding review',
+            });
+        }
+
+        const result = await services.order.updateOrderProductStatus(data.orderID, data.productId);
+
+        if (!result) {
+            return res.status(200).json({
+                message: 'Error while creating review! Please try again later',
+                notiHeader: 'Failed to adding review',
+            });
+        }
+
+        return res
+            .status(200)
+            .json({ message: 'This will help us improve our service', notiHeader: 'Adding review success fully! ' });
+    } catch (err) {
+        return res.status(200).json({
+            message: 'Error while creating review! Please try again later',
+            notiHeader: 'Failed to adding review',
+        });
+    }
+};
+
 export const addToCart = async (req, res) => {
     const { productId, quantity } = req.body;
 
@@ -298,6 +331,8 @@ export const deleteCartProduct = async (req, res) => {
 export const createOrder = async (req, res) => {
     const { deliveryInfo, orderDetails, userID } = req.body;
 
+    console.log(orderDetails);
+
     try {
         const products = orderDetails.products.map((product) => ({
             productID: product.productId,
@@ -394,19 +429,41 @@ export const getOrdersDetails = async (req, res) => {
             idList.map(async (order) => {
                 const productsID = order.productsID;
 
-                const products = await services.product.searchProducts({ _id: { $in: productsID } });
+                const products = [];
+
+                for (let productID of productsID) {
+                    const product = await services.product.searchProducts({ _id: productID });
+                    products.push(product[0]);
+                }
+
                 const data = {
                     orderID: order.orderID,
                     products: products,
                 };
-
                 return data;
             }),
         );
 
         return res.status(200).json({ ordersDetails: ordersDetails });
     } catch (err) {
-        return res.status(200).josn({ orderDetails: [] });
         console.log(err);
+        return res.status(200).josn({ orderDetails: [] });
+    }
+};
+
+export const updateOrder = async (req, res) => {
+    const { id, updates } = req.body;
+
+    try {
+        const order = await services.order.updateOrder(updates, id);
+
+        if (!order) {
+            return res.status(200).json({ message: 'Error while updating order! Please try again later' });
+        }
+
+        return res.status(200).json({ message: '', order: order });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).json({ message: 'Error while updating order! Please try again later' });
     }
 };
