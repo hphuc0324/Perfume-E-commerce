@@ -2,13 +2,12 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import useDebounce from '../../hooks/useDebounce';
+import SearchPopper from '../../poppers/SearchPopper';
 
 import styles from './SearchBar.module.scss';
-import useDebounce from '../../hooks/useDebounce';
-
-import { useNavigate } from 'react-router-dom';
-
-import SearchPopper from '../../poppers/SearchPopper';
+import request from '../../utils/request';
 
 const cx = classNames.bind(styles);
 
@@ -39,15 +38,31 @@ function SearchBar() {
         navigate(`/search?name=${searchTextDebounce}`);
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearchClick(e);
+        }
+    };
+
     useEffect(() => {
-        //load products with name include the search text
-        item.map((item, i) => {
-            setItemList((prev) => [...prev, item]);
-        });
+        if (searchTextDebounce.trim().length === 0) {
+            setItemList([]);
+        }
+        const fetchProduct = async () => {
+            const res = await request.get('products/search', {
+                params: {
+                    name: searchTextDebounce,
+                },
+            });
+
+            setItemList(res.data.products.slice(0, 5));
+        };
+
+        fetchProduct();
     }, [searchTextDebounce]);
 
     return (
-        <SearchPopper items={item} callback={setSearchText}>
+        <SearchPopper items={itemList} callback={setSearchText}>
             <div className={cx('wrapper')}>
                 <button className={cx('search-icon')} onClick={handleSearchClick}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -57,6 +72,7 @@ function SearchBar() {
                     placeholder="Search for product..."
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
+                    onKeyUp={handleKeyPress.bind(this)}
                 />
             </div>
         </SearchPopper>

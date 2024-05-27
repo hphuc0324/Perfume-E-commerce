@@ -11,7 +11,6 @@ function App() {
     const checkUserToken = async () => {
         try {
             const res = await request.get('/checkLoginStatus');
-
             setUser(res.data.user);
         } catch (err) {
             setUser(null);

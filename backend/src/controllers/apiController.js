@@ -22,7 +22,7 @@ export const login = async (req, res) => {
 
         const token = createLoginToken(user._id, user.role);
         res.cookie('loginToken', token);
-        return res.status(200).json({ user: user._id, role: user.role, message: '' });
+        return res.status(200).json({ user: { userID: user._id, role: user.role }, message: '' });
     } catch (err) {
         console.log(err);
 
@@ -50,7 +50,6 @@ export const register = async (req, res) => {
                 message: 'Account already exists! Please choose another account name',
             });
         }
-        console.log('in');
         try {
             const user = await services.user.createUser(account, password, name, phonenumber, gender);
 
@@ -179,7 +178,6 @@ export const searchProductReviews = async (req, res) => {
 
     try {
         const reviews = await services.productReview.searchProductReviews(params);
-
         if (reviews.length > 0) {
             return res.status(200).json({ reviews: reviews });
         }
@@ -216,6 +214,7 @@ export const addProductReview = async (req, res) => {
             .status(200)
             .json({ message: 'This will help us improve our service', notiHeader: 'Adding review success fully! ' });
     } catch (err) {
+        console.log(err);
         return res.status(200).json({
             message: 'Error while creating review! Please try again later',
             notiHeader: 'Failed to adding review',
@@ -384,6 +383,7 @@ export const searchOrders = async (req, res) => {
 
     try {
         const orders = await services.order.searchOrders(params);
+        console.log(orders);
 
         return res.status(200).json({ orders: orders });
     } catch (err) {
@@ -411,7 +411,6 @@ export const updateUserInfo = async (req, res) => {
 
 export const searchProducts = async (req, res) => {
     const params = req.query;
-
     try {
         const products = await services.product.searchProducts(params);
         return res.status(200).json({ products: products });

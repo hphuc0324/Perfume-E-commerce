@@ -33,7 +33,7 @@ function Login() {
 
             if (res.data.message === '') {
                 setUser(res.data.user);
-                if (res.data.role === 'user') {
+                if (res.data.user.role === 'user') {
                     navigate('/');
                 } else {
                     navigate('/admin/product');

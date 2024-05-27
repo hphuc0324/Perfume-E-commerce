@@ -17,6 +17,8 @@ function ClientOrder() {
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [modalParams, setModalParams] = useState({});
 
+    console.log(user);
+
     const fetchOrders = async () => {
         try {
             const res = await request.get('/orders/search', { params: { userID: user.userID } });
@@ -45,6 +47,7 @@ function ClientOrder() {
             });
 
             const data = res.data.ordersDetails;
+            console.log(orders);
             const mapped = orders.map((order) => {
                 const orderDetails = data.find((d) => d.orderID.toString() === order._id.toString());
 

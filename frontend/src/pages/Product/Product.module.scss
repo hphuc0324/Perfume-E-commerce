@@ -201,7 +201,7 @@
 }
 
 .review-date {
-    margin-left: 64px;
+    margin-left: 48px;
     font-size: 1.4rem;
 }
 
@@ -225,4 +225,14 @@
     font-weight: 600;
     font-size: 2rem;
     margin: 16px 0;
+}
+
+.review-content {
+    margin: 8px 0;
+    padding: 0 8px;
+}
+
+.review-stars {
+    margin-left: 24px;
+    color: rgb(241, 196, 15);
 }

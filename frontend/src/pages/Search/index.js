@@ -52,7 +52,7 @@ function Search() {
             {results.length !== 0 && (
                 <div className={cx('search-items')}>
                     {results.map((product, index) => (
-                        <div className={cx('item')}>
+                        <div key={index} className={cx('item')}>
                             <Product product={product} horizontal />
                         </div>
                     ))}

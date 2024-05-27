@@ -4,11 +4,11 @@ import styles from './Product.module.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPlus, faStar as filledStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as normalStar } from '@fortawesome/free-regular-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 import request from '../../utils/request';
-import images from '../../assets/images';
 
 import { default as ProductComp } from '../../components/Product';
 import PopupMessage from '../../components/PopupMessage';
@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 function Product() {
     const [product, setProduct] = useState(null);
     const [capacity, setCapacity] = useState(100);
-    const [amount, setAmount] = useState(1);
+    const [amount, setAmount] = useState(0);
     const [section, setSection] = useState('info');
     const [reviews, setReviews] = useState([]);
     const { id } = useParams();
@@ -52,7 +52,7 @@ function Product() {
                         productId: id,
                     },
                 });
-
+                console.log(res.data.reviews);
                 setReviews(res.data.reviews);
             } catch (err) {
                 setReviews(null);
@@ -221,6 +221,15 @@ function Product() {
                                             <div className={cx('review-info')}>
                                                 <div className={cx('review-avatar')}>{review.userId.name[0]}</div>
                                                 <span className={cx('review-name')}>{review.userId.name}</span>
+                                                <span className={cx('review-stars')}>
+                                                    {[1, 2, 3, 4, 5].map((value) => (
+                                                        <span key={value} className={cx('star-icon')}>
+                                                            <FontAwesomeIcon
+                                                                icon={value > review.stars ? normalStar : filledStar}
+                                                            />
+                                                        </span>
+                                                    ))}
+                                                </span>
                                                 <span className={cx('review-date')}>
                                                     Posted on {new Date(review.date).toLocaleDateString()}
                                                 </span>

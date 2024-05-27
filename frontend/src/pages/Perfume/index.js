@@ -87,6 +87,9 @@ function Perfume() {
                         >
                             Unisex
                         </Link>
+                        <Link to="/perfume?" className={cx('filter-item', { selected: categoryFilter === '' })}>
+                            All
+                        </Link>
                     </div>
 
                     <div className={cx('filter-list')}>
