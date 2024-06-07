@@ -73,13 +73,18 @@ const routes = [
         layout: layouts.Admin,
     },
     {
-        path: '/admin/product',
+        path: '/admin/products',
         component: <pages.AdminProduct />,
         layout: layouts.Admin,
     },
     {
         path: '/admin/order',
         component: <pages.AdminOrder />,
+        layout: layouts.Admin,
+    },
+    {
+        path: '/admin/product',
+        component: <pages.AdminProductDetails />,
         layout: layouts.Admin,
     },
 ];

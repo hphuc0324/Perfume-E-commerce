@@ -25,6 +25,7 @@ function AdminProduct() {
 
     return (
         <div className={cx('wrapper')}>
+            <button className={cx('add-btn')}>ADD NEW PRODUCT</button>
             <div className={cx('table-header')}>PRODUCTS</div>
             <div className={cx('data-table')}>
                 <div className={cx('data-row')}>
