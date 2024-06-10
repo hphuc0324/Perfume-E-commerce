@@ -3,6 +3,7 @@ const router = express.Router();
 
 import * as apiControllers from '../controllers/apiController';
 import { verifyLoginToken, parseCartToken } from '../middleware/token';
+import { uploadSingle } from '../config/multerConfig';
 
 const initApi = (app) => {
     router.get('/');
@@ -15,6 +16,7 @@ const initApi = (app) => {
     router.get('/users/search', apiControllers.searchUsers);
 
     router.get('/products/search', apiControllers.searchProducts);
+    router.post('/products', uploadSingle, apiControllers.addProduct);
 
     router.post('/addToCart', parseCartToken, apiControllers.addToCart);
     router.get('/getCartProducts', parseCartToken, apiControllers.getCartProducts);

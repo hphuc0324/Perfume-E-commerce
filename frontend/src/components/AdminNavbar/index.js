@@ -54,7 +54,7 @@ function AdminNavbar() {
                 Blogs
             </Link>
             <Link
-                to="/admin/product"
+                to="/admin/products"
                 className={cx('nav-item', { selected: selected === 5 })}
                 onClick={() => setSelected(5)}
             >

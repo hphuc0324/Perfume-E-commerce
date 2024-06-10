@@ -28,7 +28,5 @@ export const searchProducts = async (params) => {
         query.name = new RegExp(query.name, 'i');
     }
 
-    const products = models.Product.find(query);
-
-    return products;
+    return await models.Product.find(query);
 };

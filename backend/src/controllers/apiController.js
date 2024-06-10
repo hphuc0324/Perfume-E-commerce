@@ -330,8 +330,6 @@ export const deleteCartProduct = async (req, res) => {
 export const createOrder = async (req, res) => {
     const { deliveryInfo, orderDetails, userID } = req.body;
 
-    console.log(orderDetails);
-
     try {
         const products = orderDetails.products.map((product) => ({
             productID: product.productId,
@@ -383,7 +381,6 @@ export const searchOrders = async (req, res) => {
 
     try {
         const orders = await services.order.searchOrders(params);
-        console.log(orders);
 
         return res.status(200).json({ orders: orders });
     } catch (err) {
@@ -465,4 +462,8 @@ export const updateOrder = async (req, res) => {
         console.log(err);
         return res.status(200).json({ message: 'Error while updating order! Please try again later' });
     }
+};
+
+export const addProduct = async (req, res) => {
+    console.log(req.file.path);
 };
